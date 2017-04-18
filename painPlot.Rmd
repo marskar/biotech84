@@ -1,0 +1,46 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+#Goal
+Plot data from two different dataframes onto same plot, each with separate y-axes, but same x-axis time scale (0-8hrs).
+
+#Data
+Two dataframes
+- The first is x vs y, time vs drug concentration, from 5mg, 20mg or 80mg doses (painrelief.csv).
+- The second is count data of pain relief (yes/no) at each time point, subsetted out only for successes (=1) (mydf4.csv).  
+#Plot 
+Count data as a barplot along same time scale (x-axis), overlaid with the data points of drug conc.
+
+#Setup
+Create painPlot folder in working directory and put painrelief.csv and mydf4.csv inside.
+
+## Read in the data
+```{r}
+path<- paste(getwd(), "/painPlot", sep = "")
+setwd(path)
+painrelief <- read.csv("painrelief.csv")
+mydf4 <- read.csv("mydf4.csv")
+```
+
+## Install and load ggplot (if not installed)
+```{r}
+list.of.packages <- c("ggplot2", "Rcpp")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+```
+
+```{r}
+#require returns (invisibly) a logical indicating whether the required package is available.
+if(!require("ggplot2")){ 
+    install.packages("ggplot2")
+    library(ggplot2)
+}
+
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
