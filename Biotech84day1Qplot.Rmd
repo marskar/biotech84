@@ -1,0 +1,136 @@
+---
+title: "The Base Plotting System in ggplot2"
+output: html_notebook
+---
+
+## Example Dataset
+
+```{r}
+getwd()
+library(ggplot2)
+str(mpg)
+```
+
+
+
+
+## ggplot2 "Hello, world!"
+
+```{r}
+qplot(displ, hwy, data = mpg)
+```
+
+
+## Modifying aesthetics
+
+```{r}
+qplot(displ, hwy, data = mpg, color = drv)
+
+```
+
+
+
+## Adding a geom
+
+```{r}
+qplot(displ, hwy, data = mpg, geom = c("point", "smooth"))
+
+```
+
+
+## Histograms
+
+```{r}
+qplot(hwy, data = mpg, fill = drv)
+
+```
+
+
+
+## Facets
+
+```{r, fig.width=4.5}
+qplot(displ, hwy, data = mpg, facets = . ~ drv)
+qplot(hwy, data = mpg, facets = drv ~ ., binwidth = 2)
+```
+
+---
+
+## MAACS Cohort
+
+- Mouse Allergen and Asthma Cohort Study
+- Baltimore children (aged 5-17)
+- Persistent asthma, exacerbation in past year
+- Study indoor environment and its relationship with asthma morbidity
+- Publication: http://goo.gl/WqE9j8
+
+## Example: MAACS
+
+```{r}
+str(maacs)
+```
+
+
+## Histogram of eNO
+
+```{r}
+qplot(log(eno), data = maacs)
+```
+
+
+## Histogram by Group
+
+```{r}
+qplot(log(eno), data = maacs, fill = mopos)
+```
+
+
+## Density Smooth
+
+```{r, fig.width=4.5}
+qplot(log(eno), data = maacs, geom = "density")
+qplot(log(eno), data = maacs, geom = "density", color = mopos)
+```
+
+
+## Scatterplots: eNO vs. PM$_{2.5}$
+
+```{r, fig.width=2.7}
+qplot(log(pm25), log(eno), data = maacs)
+qplot(log(pm25), log(eno), data = maacs, shape = mopos)
+qplot(log(pm25), log(eno), data = maacs, color = mopos)
+```
+
+
+
+## Scatterplots: eNO vs. PM$_{2.5}$
+
+```{r}
+qplot(log(pm25), log(eno), data = maacs, color = mopos, 
+      geom = c("point", "smooth"), method = "lm")
+```
+
+
+
+## Scatterplots: eNO vs. PM$_{2.5}$
+
+```{r, fig.width=9}
+qplot(log(pm25), log(eno), data = maacs, geom = c("point", "smooth"), 
+      method = "lm", facets = . ~ mopos)
+```
+
+
+## Summary of qplot()
+
+- The `qplot()` function is the analog to `plot()` but with many built-in features
+- Syntax somewhere in between base/lattice
+- Produces very nice graphics, essentially publication ready (if you like the design)
+- Difficult to go against the grain/customize (don't bother; use full ggplot2 power in that case)
+
+
+## Resources
+
+- The _ggplot2_ book by Hadley Wickham
+- The _R Graphics Cookbook_ by Winston Chang (examples in base plots and in ggplot2)
+- ggplot2 web site (http://ggplot2.org)
+- ggplot2 mailing list (http://goo.gl/OdW3uB), primarily for developers
