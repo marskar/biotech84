@@ -3,6 +3,12 @@ title: "The Base Plotting System in R"
 output: html_notebook
 ---
 
+# About
+This material is adapted from Roger Peng's [Exploratory Data Analysis Course](https://www.coursera.org/learn/exploratory-data-analysis).
+
+You can see Roger's original [source code](https://github.com/DataScienceSpecialization/courses/tree/master/04_ExploratoryAnalysis) on GitHub.
+
+I also recommend looking at the [repo for Roger's book](https://github.com/rdpeng/exdata), which is available for little or no money (you decide!) on [Leanpub](https://leanpub.com/exdata/).
 
 ## Simple Base Graphics: Histogram
 
@@ -11,7 +17,7 @@ library(datasets)
 hist(airquality$Ozone)  ## Draw a new plot
 ```
 
----
+
 
 ## Simple Base Graphics: Scatterplot
 
@@ -20,7 +26,7 @@ library(datasets)
 with(airquality, plot(Wind, Ozone))
 ```
 
----
+
 
 ## Simple Base Graphics: Boxplot
 
@@ -29,7 +35,7 @@ library(datasets)
 airquality <- transform(airquality, Month = factor(Month))
 boxplot(Ozone ~ Month, airquality, xlab = "Month", ylab = "Ozone (ppb)")
 ```
----
+
 
 
 ## Some Important Base Graphics Parameters
@@ -51,7 +57,7 @@ key ones:
 - `ylab`: character string for the y-axis label
 
 
----
+
 
 ## Some Important Base Graphics Parameters
 
@@ -66,7 +72,7 @@ overridden when specified as arguments to specific plotting functions.
 - `mfrow`: number of plots per row, column (plots are filled row-wise) 
 - `mfcol`: number of plots per row, column (plots are filled column-wise)
 
----
+
 
 ## Some Important Base Graphics Parameters
 
@@ -78,7 +84,7 @@ par("col")
 par("pch")
 ```
 
----
+
 
 ## Some Important Base Graphics Parameters
 
@@ -90,7 +96,7 @@ par("mar")
 par("mfrow")
 ```
 
----
+
 
 ## Base Plotting Functions
 
@@ -107,7 +113,7 @@ par("mfrow")
 - `mtext`: add arbitrary text to the margins (inner or outer) of the plot 
 - `axis`: adding axis ticks/labels
 
----
+
 
 ## Base Plot with Annotation
 
@@ -117,7 +123,7 @@ with(airquality, plot(Wind, Ozone))
 title(main = "Ozone and Wind in New York City")  ## Add a title
 ```
 
----
+
 
 ## Base Plot with Annotation
 
@@ -126,7 +132,7 @@ with(airquality, plot(Wind, Ozone, main = "Ozone and Wind in New York City"))
 with(subset(airquality, Month == 5), points(Wind, Ozone, col = "blue"))
 ```
 
----
+
 
 ## Base Plot with Annotation
 
@@ -137,7 +143,7 @@ with(subset(airquality, Month != 5), points(Wind, Ozone, col = "red"))
 legend("topright", pch = 1, col = c("blue", "red"), legend = c("May", "Other Months"))
 ```
 
----
+
 
 ## Base Plot with Regression Line
 
@@ -147,7 +153,7 @@ model <- lm(Ozone ~ Wind, airquality)
 abline(model, lwd = 2)
 ```
 
----
+
 
 ## Multiple Base Plots
 
@@ -159,7 +165,7 @@ with(airquality, {
 })
 ```
 
----
+
 
 ## Multiple Base Plots
 
@@ -173,7 +179,7 @@ with(airquality, {
 })
 ```
 
----
+
 
 ## Summary
 

@@ -1,30 +1,30 @@
 ---
-title: "The Base Plotting System in ggplot2"
+title: "Plotting data using ggplot2 in R"
 output: html_notebook
 ---
 
-## Example: BMI, PM$_{2.5}$, Asthma
+# About
+
+This material is adapted from Roger Peng's [Exploratory Data Analysis Course](https://www.coursera.org/learn/exploratory-data-analysis).
+
+You can see Roger's original [source code](https://github.com/DataScienceSpecialization/courses/tree/master/04_ExploratoryAnalysis) on GitHub.
+
+I also recommend looking at the [repo for Roger's book](https://github.com/rdpeng/exdata), which is available for little or no money (you decide!) on [Leanpub](https://leanpub.com/exdata/).
+
+
+## Example Analysis: BMI, PM2.5, Asthma
 - Mouse Allergen and Asthma Cohort Study
 - Baltimore children (age 5-17)
 - Persistent asthma, exacerbation in past year
-- Does BMI (normal vs. overweight) modify the relationship between PM$_{2.5}$ and asthma symptoms?
+- Does BMI (normal vs. overweight) modify the relationship between PM2.5 and asthma symptoms?
 
+## Load ggplot2 package
 
+```{r}
+if(!require(ggplot2)) install.packages("ggplot2")
 
-```{r,echo=FALSE}
-getwd()
-
-maacs <- read.csv("ggplot2_lecture2_data.csv")
-```
-
-## Basic Plot
-
-```{r, fig.width=9}
 library(ggplot2)
-qplot(logpm25, NocturnalSympt, data = maacs, facets = . ~ bmicat, 
-      geom = c("point", "smooth"), method = "lm")
 ```
-
 
 ## Building Up in Layers
 
@@ -129,13 +129,13 @@ g + geom_line() + coord_cartesian(ylim = c(-3, 3))
 
 
 ## More Complex Example
-- How does the relationship between PM$_{2.5}$ and nocturnal symptoms vary by BMI and NO$_2$?
-- Unlike our previous BMI variable, NO$_2$ is continuous
-- We need to make NO$_2$ categorical so we can condition on it in the plotting
+- How does the relationship between PM2.5 and nocturnal symptoms vary by BMI and NO2?
+- Unlike our previous BMI variable, NO2 is continuous
+- We need to make NO2 categorical so we can condition on it in the plotting
 - Use the `cut()` function for this
 
 
-## Making NO$_2$ Tertiles
+## Making NO2 Tertiles
 
 ```{r}
 ## Calculate the tertiles of the data
@@ -151,7 +151,7 @@ levels(maacs$no2tert)
 
 ## Final Plot
 
-```{r, echo=FALSE, fig.width=9, fig.height=5}
+```{r, echo=TRUE, fig.width=9, fig.height=5}
 ## Setup ggplot with data frame
 g <- ggplot(maacs, aes(logpm25, NocturnalSympt))
 
@@ -164,24 +164,6 @@ g + geom_point(alpha = 1/3) +
   labs(y = "Nocturnal Symptoms") + 
   labs(title = "MAACS Cohort")
 ```
-
-
-## Code for Final Plot
-
-```{r, eval=FALSE}
-## Setup ggplot with data frame
-g <- ggplot(maacs, aes(logpm25, NocturnalSympt))
-
-## Add layers
-g + geom_point(alpha = 1/3) + 
-  facet_wrap(bmicat ~ no2tert, nrow = 2, ncol = 4) + 
-  geom_smooth(method="lm", se=FALSE, col="steelblue") + 
-  theme_bw(base_family = "Avenir", base_size = 10) + 
-  labs(x = expression("log " * PM[2.5])) + 
-  labs(y = "Nocturnal Symptoms") + 
-  labs(title = "MAACS Cohort")
-```
-
 
 ## Summary
 - ggplot2 is very powerful and flexible if you learn the 'grammar' and the various elements that can be tuned/modified

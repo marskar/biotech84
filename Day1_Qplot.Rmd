@@ -1,16 +1,24 @@
 ---
-title: "The Base Plotting System in ggplot2"
+title: "The qplot function in ggplot2"
 output: html_notebook
 ---
 
-## Example Dataset
+# About
+
+This material is adapted from Roger Peng's [Exploratory Data Analysis Course](https://www.coursera.org/learn/exploratory-data-analysis).
+
+You can see Roger's original [source code](https://github.com/DataScienceSpecialization/courses/tree/master/04_ExploratoryAnalysis) on GitHub.
+
+I also recommend looking at the [repo for Roger's book](https://github.com/rdpeng/exdata), which is available for little or no money (you decide!) on [Leanpub](https://leanpub.com/exdata/).
+
+
+## Load ggplot2 package
 
 ```{r}
+if(!require(ggplot2)) install.packages("ggplot2")
+
 library(ggplot2)
-str(mpg)
 ```
-
-
 
 
 ## ggplot2 "Hello, world!"
@@ -61,15 +69,7 @@ qplot(hwy, data = mpg, facets = drv ~ ., binwidth = 2)
 - Baltimore children (aged 5-17)
 - Persistent asthma, exacerbation in past year
 - Study indoor environment and its relationship with asthma morbidity
-- Recent publication: http://goo.gl/WqE9j8
-
-```{r,echo=FALSE}
-eno <- read.csv("eno.csv")
-skin <- read.csv("skin.csv")
-env <- read.csv("environmental.csv")
-m <- merge(eno, env, by = "id")
-maacs <- merge(m, skin, by = "id")
-```
+- Publication: http://goo.gl/WqE9j8
 
 ## Example: MAACS
 
@@ -126,13 +126,37 @@ qplot(log(pm25), log(eno), data = maacs, geom = c("point", "smooth"),
       method = "lm", facets = . ~ mopos)
 ```
 
+# A final example using the MAACS dataset
+
+## Download dataset if needed
+
+```{r}
+# make sure the maacs dataset is available in the working directory
+list.files(path=".", pattern = "maacs.Rda")=="maacs.Rda"
+# if FALSE, use this code to download the dataset
+if(!file.exists("maacs.Rda")){download.file("https://github.com/lupok2001/datasciencecoursera/blob/master/maacs.Rda", destfile = "maacs.Rda")}
+```
+
+## Load the dataset
+
+```{r}
+load("maacs.Rda")
+```
+
+## Basic Plot
+
+```{r, fig.width=9}
+qplot(logpm25, NocturnalSympt, data = maacs, facets = . ~ bmicat, 
+      geom = c("point", "smooth"), method = "lm")
+```
+
 
 ## Summary of qplot()
 
 - The `qplot()` function is the analog to `plot()` but with many built-in features
 - Syntax somewhere in between base/lattice
 - Produces very nice graphics, essentially publication ready (if you like the design)
-- Difficult to go against the grain/customize (don’t bother; use full ggplot2 power in that case)
+- Difficult to go against the grain/customize (don't bother; use full ggplot2 power in that case)
 
 
 ## Resources
