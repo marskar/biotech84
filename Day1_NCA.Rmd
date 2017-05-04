@@ -204,7 +204,7 @@ mPKresults<-melt(PKresults1, id=c("ID", "PPTESTCD"))
 ```{r}
         ### cast(data, formula, function) ###
 PKresults3<-dcast(mPKresults, ID~variable+PPTESTCD)
-write.csv(PKresults3, file="PKNCA results.csv")
+write.csv(PKresults3, file="PKNCAresults.csv")
 ```
 
 
@@ -264,8 +264,8 @@ class(alldata$PPORRES_aucinf.obs)<-"numeric"
 pairs(~PPORRES_cmax+PPORRES_aucinf.obs +Age + Weight +
         SCreatinine+SerumALT,data=alldata, 
       main="Scatterplot Matrix for exposure vs continuous variables only")
-write.csv(alldata, file="alldata1")
-alldata1<-read.csv("alldata1", header=TRUE)
+write.csv(alldata, file="alldata1.csv")
+alldata1<-read.csv("alldata1.csv", header=TRUE)
 
 pairs(~PPORRES_cmax+PPORRES_aucinf.obs+Race+Gender,data=alldata1, 
       main="Scatterplot Matrix for exposure vs ordinal variables only")
