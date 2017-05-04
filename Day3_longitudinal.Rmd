@@ -203,7 +203,7 @@ exp(fixef(resp.glmm1))
 out.compare<-round(cbind(exp(coef(resp_gee3)), exp(fixef(resp.glmm2))),3)
 
 colnames(out.compare)<-c('GEE','GLMM')
-View(out.compare)
+out.compare
 
 ```
 

@@ -11,7 +11,12 @@ data1<-read.csv("finalPKdata.csv", header=TRUE)
 
 ### Activate required libraries
 ```{r}
-list.of.packages <- c("lattice", "PKNCA", "ggplot2", "knitr", "nlme", "reshape2")
+list.of.packages <- c("lattice", 
+                      "PKNCA", 
+                      "ggplot2", 
+                      "knitr", 
+                      "nlme", 
+                      "reshape2")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only = TRUE)
@@ -501,7 +506,7 @@ plot(alldata$Weight, alldata$PPORRES_aucinf.obs)
 plot(alldata$Age, alldata$PPORRES_aucinf.obs)
 ```
 
-##### AUCinf by Gender ####
+##### AUCinf by Gender
 ```{r}
 plot(alldata$Gender, alldata$PPORRES_aucinf.obs)
 plot.aucinfsex<- ggplot() + geom_boxplot(data = alldata, aes(x=Gender, y = PPORRES_aucinf.obs), size=1.5, colour='blue') +
@@ -519,7 +524,7 @@ plot.aucinfsex+ theme(panel.background = element_rect(fill='grey', colour='red')
   theme(legend.text = element_text(colour="blue", size = 12, face = "bold"))
 ```
 
-##### AUCinf by Race ####
+##### AUCinf by Race
 ```{r}
 par(mfrow=c(1,1))
 plot(alldata$Race, alldata$PPORRES_aucinf.obs)
