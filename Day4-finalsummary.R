@@ -1,0 +1,284 @@
+pain<-read.csv("Painrelief.csv", sep=",")
+painHL<-read.csv("Painrelief_modHL.csv", sep=",")
+remed<-read.csv("TimetoRemed.csv", sep=",")
+summary(pain)
+##### Exploratory plots----
+ ##### Conc vs time curve, all together---
+library(ggplot2)
+plot <- ggplot(data = pain, aes(x = TIME, y = CONC, group=ARM))+geom_point()+
+  xlab("Time (hr)")+
+  ylab("Concentration (ng/mL)")
+plot
+##### Pain Relief by Dose---
+plot1<-ggplot(data=pain, aes(x=factor(PAINRELIEF),fill=DOSE)) + 
+  geom_bar(stat="bin")+
+  facet_grid(. ~ DOSE)+
+  xlab("Pain Relief")+
+  ylab("Count")
+plot1+theme(panel.background = element_rect(fill='grey', colour='red'))+
+  theme(axis.title.y = element_text(colour = 'black', size = 20))+
+  theme(axis.text.y = element_text(size = 18))+
+  theme(axis.title.x = element_text(colour = 'black', size = 20))+
+  theme(axis.text.x = element_text(size = 18))+
+  theme(plot.title = element_text(lineheight=.8, face="bold"))+
+  theme(legend.position="top")+
+  theme(legend.title=element_blank())+
+  theme(legend.text = element_text(colour="blue", size = 18, face = "bold"))
+
+plot2<-ggplot(data=pain, aes(x=factor(PAINRELIEF),fill=TIME)) + 
+  geom_bar(stat="bin")+
+  facet_grid(. ~ TIME)+
+  xlab("Pain Relief")+
+  ylab("Count")
+plot2+theme(panel.background = element_rect(fill='grey', colour='red'))+
+  theme(axis.title.y = element_text(colour = 'black', size = 20))+
+  theme(axis.text.y = element_text(size = 18))+
+  theme(axis.title.x = element_text(colour = 'black', size = 20))+
+  theme(axis.text.x = element_text(size = 18))+
+  theme(plot.title = element_text(lineheight=.8, face="bold"))+
+  theme(legend.position="top")+
+  theme(legend.title=element_blank())+
+  theme(legend.text = element_text(colour="blue", size = 18, face = "bold"))
+par(mfrow=c(1,2))
+plot1
+plot2
+#######
+plot3<-ggplot(pain, aes(x = DOSE, y = PAINRELIEF)) +
+  stat_sum(aes(size = ..n.., group = 1)) +
+  scale_size_area(max_size=10)
+plot3
+## Create 2x2 contingency table by pain relief and Dose for all 160 sub-
+table(pain$PAINRELIEF, pain$DOSE)
+table(painHL$PAINRELIEF, painHL$CONC)
+
+
+#### generalized linear mixed models for longitudinal binary responses----
+library(geepack)
+library(ggplot2)
+library(reshape2)
+
+###### cross tabulations-----
+###just look at binary resp (nstat) by month--
+ftable(addmargins(xtabs(~PAINRELIEF+TIME,data=pain)))
+### now add treatment (drug or placebo) into the mix---
+ftable((xtabs(~DOSE+PAINRELIEF+TIME,data=pain)))
+
+### To identify potential predictor variables---
+####### Re arrange data for stacked bar chart---------------
+count1<-ftable(xtabs(~PAINRELIEF+TIME,data=pain))
+count1
+count2<-ftable(xtabs(~PAINRELIEF+DOSE,data=pain))
+count2
+### melt fnc converts data from a wide format to a 
+mydf = melt(count1)
+names(mydf) = c("PainRelief", "Time", "Count")
+head(mydf)
+mydf2 = melt(count2)
+names(mydf2) = c("PainRelief", "Dose", "Count")
+mydf2
+###plot it--
+####### Stacked bar chart---------------
+library(reshape2)
+plot4<-ggplot(mydf, aes(x= Time, y= Count, fill=PainRelief)) +
+  geom_bar(stat="identity")
+plot4
+#### plot attributes - axis labels, axis titles, background, #####legend options
+plot4+ theme(panel.background = element_rect(fill='gray', colour='red'))+
+  theme(axis.title.y = element_text(colour = 'black', size = 20))+
+  theme(axis.text.y = element_text(size = 18))+
+  theme(axis.title.x = element_text(colour = 'black', size = 20))+
+  theme(axis.text.x = element_text(size = 18))+
+  theme(plot.title = element_text(lineheight=.8, face="bold"))+
+  theme(legend.position="right")+
+  theme(legend.title=element_blank())+
+  theme(legend.text = element_text(colour="blue", size = 18, face = "bold"))+
+  theme(strip.text.x = element_text(size = 12, face = "bold",colour = "black"))
+
+plot5<-ggplot(mydf2, aes(x= Dose, y= Count, fill=PainRelief)) +
+  geom_bar(stat="identity")
+#### plot attributes - axis labels, axis titles, background, #####legend options
+plot5+ theme(panel.background = element_rect(fill='gray', colour='red'))+
+  theme(axis.title.y = element_text(colour = 'black', size = 20))+
+  theme(axis.text.y = element_text(size = 18))+
+  theme(axis.title.x = element_text(colour = 'black', size = 20))+
+  theme(axis.text.x = element_text(size = 18))+
+  theme(plot.title = element_text(lineheight=.8, face="bold"))+
+  theme(legend.position="right")+
+  theme(legend.title=element_blank())+
+  theme(legend.text = element_text(colour="blue", size = 18, face = "bold"))+
+  theme(strip.text.x = element_text(size = 12, face = "bold",colour = "black"))
+
+######### Fit a marginal model-----------------------
+library(gee)
+pain_gee1 <- gee(PAINRELIEF ~ as.factor(DOSE)+CONC+TIME, data = pain, family = "binomial", id = ID, corstr = "independence", scale.fix = TRUE, scale.value = 1)
+summary(pain_gee1)
+###### Hypothesis testing--------
+teststat.gee1<-round(summary(pain_gee1)$coefficients,4)
+#### calculate p-value ------
+pval1<-round(pnorm(abs(teststat.gee1[,5]),lower.tail=FALSE)*2,4)
+## final table-------
+cbind(teststat.gee1,pval1)
+ ### independenet matrix not correct, try exchangeable--
+###### Exchangeable correlation ----------
+pain_gee2<- gee(PAINRELIEF ~ as.factor(DOSE)+CONC+TIME, data = pain, family = "binomial", id = ID, corstr = "exchangeable", scale.fix = TRUE, scale.value = 1)
+summary(pain_gee2)
+round(summary(pain_gee2)$coefficients,4)
+round(summary(pain_gee2)$working.correlation,3)
+
+#### Auto-regressive correl matix---
+pain_gee3<-gee(PAINRELIEF~DOSE+CONC+TIME,data=pain, family="binomial", id=ID, corstr="AR-M", scale.fix=TRUE, scale.value=1)
+summary(pain_gee3)
+
+#### Unstructured matrix---
+pain_gee4<-gee(PAINRELIEF~as.factor(DOSE)+CONC+TIME, data=pain, family="binomial", id=ID, corstr="unstructured", scale.fix=TRUE, scale.value=1)
+summary(pain_gee4)   ####Looks the best----
+
+#### Baseline model; intercept-only model---
+pain_geeBL<-gee(PAINRELIEF~1, data=pain, family="binomial", id=ID, corstr="unstructured", scale.fix=TRUE, scale.value=1)
+summary(pain_geeBL)
+baselineprob=exp(-0.5402513)/(1+exp(-0.5402513))
+baselineprob
+###### Hypothesis testing--------
+teststat.gee4<-round(summary(pain_gee4)$coefficients,4)
+#### calculate p-value ------
+pval4<-round(pnorm(abs(teststat.gee4[,5]),lower.tail=FALSE)*2,4)
+## final table-------
+cbind(teststat.gee4,pval4)
+  
+### interpretation of population averages through odds ratios---
+####### Oddsratio and confidence inetrval--------------- 
+se.dose5 <- summary(pain_gee1)$coefficients["as.factor(DOSE)5","Robust S.E."]
+ci.dose5<-exp(coef(pain_gee1)["as.factor(DOSE)5"] + c(-1,1) * se * qnorm(0.975))
+cbind(OR=exp(coef(pain_gee1)["as.factor(DOSE)5"]),ci.dose5)
+
+se.dose20<- summary(pain_gee1)$coefficients["as.factor(DOSE)20","Robust S.E."]
+ci.dose20<-exp(coef(pain_gee1)["as.factor(DOSE)20"] + c(-1,1) * se * qnorm(0.975))
+cbind(OR=exp(coef(pain_gee1)["as.factor(DOSE)20"]),ci.dose20)
+
+se.dose80<- summary(pain_gee1)$coefficients["as.factor(DOSE)80","Robust S.E."]
+ci.dose80<-exp(coef(pain_gee1)["as.factor(DOSE)80"] + c(-1,1) * se * qnorm(0.975))
+cbind(OR=exp(coef(pain_gee1)["as.factor(DOSE)80"]),ci.dose80)
+
+##### odds ratio and CI for baseline as predictor---
+se.BL <- summary(pain_geeBL)$coefficients["(Intercept)","Robust S.E."]
+ci.BL<-exp(coef(pain_geeBL)["(Intercept)"] + c(-1,1) * se * qnorm(0.975))
+cbind(OR=exp(coef(pain_geeBL)["(Intercept)"]),ci.BL)
+
+
+#### Generalized linear mixed effects model (GLMM)---
+library(lme4)
+DOSE0520<-pain$DOSE[pain$DOSE<80]
+DOSE0520
+
+#### Baseline model (intercept-only)---
+pain.glmmBL<-glmer(PAINRELIEF ~ 1+(1|ID),data = pain, family = binomial, REML=F)
+pain.glmmBL
+summary(pain.glmmBL)
+#### FULL model---
+pain.glmm<-glmer(PAINRELIEF ~ as.factor(DOSE)+TIME+CONC+(1|ID),data = pain, family = binomial, REML=F)
+summary(pain.glmm)
+########Test the significance of adding ALL covariates = Full model vs base------------ 
+pain.glmmBL$logLik
+pain.glmm$logLik
+##loglikelihood ratio test (2*(LLfull-LLbase/red)) ---
+lrt.BLFull = 2*((-1020.7) - (-1089.131))
+lrt.BLFull
+### Determine chi squared critical value for df1--
+qchisq(0.95,5)
+
+### Added random effect to CONC and ID--
+pain.glmm1<-glmer(PAINRELIEF ~ as.factor(DOSE)+TIME+CONC+(1|ID)+(1|CONC),data = pain, family = binomial, REML=F)
+summary(pain.glmm1)
+lrt1=2*((-972.4) - (-1020.7))
+lrt1
+### output full fixed effect data--
+exp(fixef(pain.glmm1))
+
+### Added random effect to CONC and ID, REMOVED 'TIME'--
+pain.glmm2<-glmer(PAINRELIEF ~ as.factor(DOSE)+CONC+(1|ID)+(1|CONC),data = pain, family = binomial, REML=F)
+summary(pain.glmm2)
+exp(fixef(pain.glmm2))
+lrt2=2*((-972.4) - (-973.2))
+lrt2
+### Removed CONC and RE on CONC--
+pain.glmm3<-glmer(PAINRELIEF ~ as.factor(DOSE)+(1|ID),data = pain, family = binomial, REML=F)
+summary(pain.glmm3)
+
+#####Compare gee, glmm and glm fits------
+out.compare <- round(cbind(exp(coef(resp_gee3)), exp(fixef(resp.glmm1))),3)
+rownames(out.compare) <- names(coef(resp_gee3))
+colnames(out.compare) <- c('GEE','GLMM')
+out.compare
+
+
+################################################################
+################################################################
+############  Continuation of Day 3's PM case study ###########
+remed<-read.csv("TimetoRemed.csv", sep=",")
+head(remed)
+##### K-M curve (Probability of remedication by Dose)---
+library(survival)
+km.fit1<-survfit( Surv(REMEDTime, REMEDStatus)~ARM, data=remed) 
+summary(km.fit1)
+plot(km.fit1,lty=c(1,3),cex=1.8,cex.lab=1.5,cex.axis=1.5, 
+     main="Probability of Remedication by Dose", xlab="Time (hr)",
+     ylab="Probability of Remedication", lwd=3.0, 
+     col=c("red","blue", "green", "black"))
+legend("bottomleft",c("80mg","20 mg", "5mg", "Placebo"),lty=c(1,3),
+       col=c("green","red", "blue", "black"), 
+       cex=1.0,lwd=1.0, bty="n")
+abline(h=0.5)
+
+
+#### Cumulative Hazard fnc; remed by dose---
+plot(km.fit1,fun="cumhaz",lty=c(1,3),cex=1.8,cex.lab=1.5,
+     cex.axis=1.5, xlab="Time (hr)",ylab="Cumulative Hazard", 
+     lwd=3.0, col=c("red","blue", "green", "black"))
+legend("topleft",c("80mg","20 mg", "5mg", "Placebo"),lty=c(1,3),
+       col=c("green","red", "blue", "black"), 
+       cex=1.0,lwd=2.0, bty="n")
+
+
+### bind AUC exposure data to remed data ##
+nca<-read.csv("FinalPKNCA1.csv", header=TRUE)
+remed2<-cbind(remed,nca$PPORRES_auclast)
+remed3<-cbind(remed2, nca$DOSE)
+
+remed4<-within(remed3,{DOSE<-factor(ARM,
+    labels=c(0,5,20,80),levels=c("Placebo", "A5_0_at2h", 
+      "A20_0_at2h", "A80_0_at2h"))})
+
+### COX MODEL - intercept only--
+cph.int<- coxph(Surv(REMEDTime, REMEDStatus) ~ 1,
+                data = remed3,ties="breslow") 
+summary(cph.int)
+
+#### FULL Model ###
+cph.full<- coxph(Surv(REMEDTime, REMEDStatus) ~ DOSE + 
+    nca$PPORRES_auclast, data = remed4, ties="breslow") 
+summary(cph.full)
+
+#### reduced Model w/o AUC
+cph.red<- coxph(Surv(REMEDTime, REMEDStatus) ~ DOSE, 
+      data = remed4, ties="breslow") 
+summary(cph.red)
+
+plot(cph.red,lty=c(1,3),cex=1.8,cex.lab=1.5,cex.axis=1.5, 
+     main="Probability of Remedication by Dose", xlab="Time (hr)",
+     ylab="Probability of Remedication", lwd=3.0, 
+     col=c("red","blue", "green", "black"))
+legend("bottomleft",c("80mg","20 mg", "5mg", "Placebo"),lty=c(1,3),
+       col=c("green","red", "blue", "black"), 
+       cex=1.0,lwd=1.0, bty="n")
+abline(h=0.5)
+
+
+##########Test the significance of placebo------------ 
+cph4.noplaceb <- coxph(Surv(REMEDTime, REMEDStatus) ~ AUC, data = remed4, ties="breslow") 
+summary(cph4.noplaceb)
+cph4.noplaceb$loglik
+cph2$loglik
+cph3$loglik
+## Partial loglikelihood ratio test 
+library(lmtest)
+lrtest(cph.full, cph.red)

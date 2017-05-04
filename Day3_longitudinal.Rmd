@@ -1,0 +1,209 @@
+---
+title: "Longitudinal"
+output: html_notebook
+---
+
+## Read in and explore data
+```{r}
+resp<-read.csv("resp.csv", sep=",")
+head(resp)
+
+```
+## Load required packages
+```{r}
+list.of.packages <- c("reshape2", "gee","geepack","lme4")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+# this should return 4 TRUE statements (one for each package)
+# you can also lapply library instead of require
+```
+
+
+###### Cross tabulations
+```{r}
+ ###just look at binary resp (nstat) by month
+ftable(addmargins(xtabs(~nstat+month,data=resp)))
+ ### now add treatment (drug or placebo) into the mix
+ftable((xtabs(~treatment+nstat+month,data=resp)))
+ ### add baseline resp as covariate
+ftable((xtabs(~baseline+nstat+month,data=resp)))
+
+```
+
+### To identify potential predictor variables
+###### Rearrange data for stacked bar chart
+
+```{r}
+count1<-ftable(xtabs(~treatment+nstat+month,data=resp))
+```
+
+### Melt fnc converts data from a wide format to a 
+```{r}
+mydf = melt(count1)
+names(mydf) = c("TRT","Outcome","Visit","Count")
+
+```
+
+### Plot it
+###### Stacked bar chart
+```{r}
+plot1<-ggplot(mydf, aes(x=Visit, y=Count, fill=Outcome )) +
+  geom_bar(stat="identity")+
+  facet_grid(.~TRT)
+plot1+ theme(panel.background = element_rect(fill='white', colour='red'))+
+  theme(axis.title.y = element_text(colour = 'black', size = 20))+
+  theme(axis.text.y = element_text(size = 18))+
+  theme(axis.title.x = element_text(colour = 'black', size = 20))+
+  theme(axis.text.x = element_text(size = 18))+
+  theme(plot.title = element_text(lineheight=.8, face="bold"))+
+  theme(legend.position="top")+
+  theme(legend.title=element_blank())+
+  theme(legend.text = element_text(colour="blue", size = 18, face = "bold"))+
+  theme(strip.text.x = element_text(size = 12, face = "bold",colour = "black"))
+
+```
+
+###### Fit a marginal model
+
+### Base 
+```{r}
+resp_gee0<-gee(nstat ~ 1, data = resp, family = "binomial", id = subject,
+               corstr = "independence", scale.fix = TRUE, scale.value = 1)
+summary(resp_gee0)
+
+```
+
+### Full
+```{r}
+resp_gee1<-gee(nstat ~ centre + treatment + sex + baseline + age, 
+      data = resp, family = "binomial", id = subject,
+      corstr = "independence", scale.fix = TRUE, scale.value = 1)
+summary(resp_gee1)
+round(summary(resp_gee1)$coefficients,4)
+round(summary(resp_gee1)$working.correlation,3)
+
+```
+
+### Independenet matrix not correct, try exchangeable
+###### Exchangeable correlation
+```{r}
+resp_gee2<-gee(nstat ~ centre + treatment + sex + baseline + age, 
+      data = resp, family = "binomial", id = subject, 
+      corstr = "exchangeable", scale.fix = TRUE, scale.value = 1)
+summary(resp_gee2)
+round(summary(resp_gee2)$coefficients,4)
+round(summary(resp_gee2)$working.correlation,3)
+
+```
+
+###### Hypothesis testing
+```{r}
+teststat.gee2<-round(summary(resp_gee2)$coefficients,4)
+```
+
+#### Calculate p-value
+```{r}
+pval<-round(pnorm(abs(teststat.gee2[,5]),lower.tail=FALSE)*2,4)
+```
+
+## Final table
+```{r}
+cbind(teststat.gee2,pval)
+
+```
+
+### Remove gender, age from model b/c not significant
+### Final model
+```{r}
+resp_gee3<-gee(nstat ~ treatment + baseline, 
+      data = resp, family = "binomial", id = subject, 
+      corstr = "exchangeable", scale.fix = TRUE, scale.value = 1)
+summary(resp_gee3)
+round(summary(resp_gee3)$coefficients,4)
+round(summary(resp_gee3)$working.correlation,3)
+
+```
+
+###### Hypothesis testing
+```{r}
+teststat.gee3<-round(summary(resp_gee3)$coefficients,4)
+```
+
+#### Calculate p-value
+```{r}
+pval3<-round(pnorm(abs(teststat.gee3[,5]),lower.tail=FALSE)*2,4)
+```
+
+## Final table
+```{r}
+cbind(teststat.gee3,pval3)
+```
+
+#### Robust SE very close to naive SE, thus correl matrix strucutre is adequate
+
+### interpretation of population averages through odds ratios
+###### Oddsratio and confidence interval
+
+```{r}
+se<-summary(resp_gee3)$coefficients["treatmenttreatment","Robust S.E."]
+ci<-exp(coef(resp_gee3)["treatmenttreatment"] + c(-1,1) * se * qnorm(0.975))
+cbind(OR=exp(coef(resp_gee3)["treatmenttreatment"]),ci)
+
+```
+
+##### odds ratio and CI for baseline as predictor---
+###### Oddsratio and confidence interval---------------
+
+```{r}
+se1<-summary(resp_gee3)$coefficients["baselinepoor","Robust S.E."]
+ci1<-exp(coef(resp_gee3)["baselinepoor"] + c(-1,1) * se1 * qnorm(0.975))
+cbind(OR=exp(coef(resp_gee3)["baselinepoor"]),ci1)
+
+```
+
+
+
+#### Generalized linear mixed effects model (GLMM)---
+```{r}
+resp.glmm0<-glmer(nstat ~ 1 + (1|subject),
+                data = resp, family = binomial, REML=F )
+summary(resp.glmm0)
+
+resp.glmm<-glmer(nstat ~ centre + treatment + baseline + sex + age +
+      (1|subject), data = resp, family = binomial, REML=F )
+summary(resp.glmm)
+
+```
+
+### removed age, gender from model to get final model--
+```{r}
+resp.glmm2<-glmer(nstat ~ centre + treatment + baseline+(1|subject),
+                  data = resp, family = binomial, REML=F )
+summary(resp.glmm2)
+
+```
+
+### removed age, gender, center from model to get final model--
+```{r}
+resp.glmm1<-glmer(nstat ~ treatment + baseline+ (1|subject),
+    data = resp, family = binomial, REML=F )
+summary(resp.glmm1)
+
+```
+
+### output full fixed effect data--
+```{r}
+exp(fixef(resp.glmm1))
+
+```
+
+#####Compare gee, glmm and glm fits------
+```{r}
+out.compare<-round(cbind(exp(coef(resp_gee3)), exp(fixef(resp.glmm2))),3)
+
+colnames(out.compare)<-c('GEE','GLMM')
+View(out.compare)
+
+```
+
