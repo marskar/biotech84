@@ -360,7 +360,7 @@ my.results.manual <- pk.nca(my.data.manual)
 summary(my.results.manual)
 my.results.manual$result
 
-write.csv(my.results.manual$result, file="PKNCA data.csv")
+write.csv(my.results.manual$result, file="PKNCAdata.csv")
 knitr::kable(summary(my.results.manual))
 
 ```
@@ -392,7 +392,7 @@ mPKresults<-melt(PKresults1, id=c("ID", "PPTESTCD"))
 ### cast(data, formula, function) ###
 ```{r}
 PKresults3<-dcast(mPKresults, ID~variable+PPTESTCD)
-write.csv(PKresults3, file="PKNCA results.csv")
+write.csv(PKresults3, file="PKNCAresults.csv")
 ```
 
 #### Cbind pk results to subsetted data.frame ###
