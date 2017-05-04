@@ -1,0 +1,420 @@
+---
+title: "Linear Regression"
+output: html_notebook
+---
+
+#### Read in and explore data
+```{r}
+data<-read.csv("SimpleLinReg_day2.csv", header=TRUE)
+str(data)
+head(data)
+```
+#### Plot dose versus response
+```{r}
+dev.off
+plot(data$dose, data$resp)
+```
+
+## LINEAR REGRESSION
+
+#### Perform Linear Regression
+```{r}
+attach(data)
+myfit<-lm(resp~dose)
+summary(myfit)
+
+resid(myfit)
+fitted(myfit)
+plot(dose,resp,cex = 1.5,cex.axis=1.5,cex.lab=1.5,ylab=
+       "Change from baseline in DBP (mmHg)",
+     xlab="Dose(mg)",pch = 16, 
+     main=" Response vs Dose")
+
+lines(dose, fitted(myfit),lwd = 3.0,col="blue")
+```
+#### Calculate confidence intervals
+```{r}
+confint(myfit)
+```
+#### Perform Analysis of Variance (ANOVA)
+```{r}
+anova(myfit)
+```
+
+
+#### Multiple Comparisons using Tukey's Method
+```{r}
+TukeyHSD(aov(resp~as.factor(dose)))
+detach(data)
+```
+
+
+## MULTIPLE LINEAR REGRESSION
+#### Read in, explore, and attach data
+```{r}
+fudata<-read.csv("MltplLinReg_Day2.csv", header = TRUE)
+str(fudata)
+head(fudata)
+attach(fudata)
+```
+
+#### Exploratory plots
+```{r}
+par(mfrow=c(1,2))
+hist(FU_CL, breaks=10, xlab="5-FU Clearance (L/min)", 
+     cex=1.5, cex.axis=1.5)
+qqnorm(FU_CL, pch=16, cex=1.5, cex.axis=1.5, 
+       ylab = "5-FU Clearance Quantiles")
+qqline(FU_CL, col="blue", cex=1.5, lwd=2.0)
+```
+
+
+#### Clearance is log-normally distributed
+```{r}
+fudata$logFUCL<-log(FU_CL)
+attach(fudata)
+par(mfrow=c(1,2))
+hist(logFUCL, breaks=10, xlab="5-FU Clearance (L/min)", 
+     cex=1.5, cex.axis=1.5)
+qqnorm(logFUCL, pch=16, cex=1.5, cex.axis=1.5, 
+       ylab = "5-FU Clearance Quantiles")
+qqline(logFUCL, col="blue", cex=1.5, lwd=2.0)
+
+```
+
+
+
+#### Semi-log plots
+```{r}
+par(mfrow=c(2,3))
+plot(AGE,logFUCL,ylim=c(-1,1),cex = 1.5,
+     cex.axis=2.0,cex.lab=2.0,
+     ylab="5-FU clearance, L/min",xlab="Age,yrs",pch = 16)
+clfit1<-lm(logFUCL~AGE)
+lines(AGE, fitted(clfit1),lwd = 2.0,col="blue")
+
+boxplot(logFUCL~SEX,cex=1.5,cex.axis=2.0,cex.lab=2.0,
+        names=c("Male","Female"))
+boxplot(logFUCL~MTX,cex=1.5,cex.axis=2.0,cex.lab=2.0,
+        names=c("No MTX","MTX"))
+plot(BSA,logFUCL,ylim=c(-1,1),cex = 1.5,cex.axis=2.0,
+     cex.lab=2.0,
+     ylab="5-FU clearance, L/min",xlab="BSA,m2",pch = 16)
+clfit2<-lm(logFUCL~BSA)
+lines(BSA, fitted(clfit2),lwd = 2.0,col="red")
+
+plot(DOSE,logFUCL,ylim=c(-1,1),cex = 1.5,cex.axis=2.0,cex.lab=2.0,
+     ylab="5-FU clearance, L/min",xlab="DOSE,mg",pch = 16)
+clfit3<-lm(logFUCL~DOSE)
+lines(DOSE, fitted(clfit3),lwd = 2.0,col="green")
+
+```
+
+
+#### Relationship Among Covariates
+```{r}
+pairs(fudata[,2:6], pch=16, cex=1.5)
+  ## correlation matrix##
+cor(fudata[,2:6])
+cor.test(MTX,DOSE)
+cor.test(AGE,BSA)
+cor.test(SEX,BSA)
+```
+
+#### Univariate analysis
+```{r}
+  ### CL vs sex
+plot(fudata$SEX, data$FU_CL)
+attach(fudata)
+LM_fu_sex<-lm(log(FU_CL) ~ factor(SEX))
+summary(LM_fu_sex)
+resid(LM_fu_sex)
+fitted(LM_fu_sex)
+plot(SEX,FU_CL,cex = 1.5,cex.axis=1.5,cex.lab=1.5,ylab=
+       "5-FU Clearance (L/min))",xlab="SEX",pch = 16)
+lines(SEX, fitted(LM_fu_sex),lwd = 3.0,col="blue")
+
+```
+
+
+#### CL vs Dose
+```{r}
+plot(fudata$DOSE, data$logFUCL)
+attach(fudata)
+LM_fu_dose<-lm(logFUCL ~ DOSE)
+summary(LM_fu_dose)
+resid(LM_fu_dose)
+fitted(LM_fu_dose)
+plot(DOSE,logFUCL,cex = 1.5,cex.axis=1.5,cex.lab=1.5, ylab=
+       "5-FU Clearance (L/min))",xlab="Dose (mg)", pch = 16)
+lines(DOSE, fitted(LM_fu_dose),lwd = 3.0,col="blue")
+
+```
+
+
+
+#### CL vs Age
+```{r}
+
+plot(fudata$AGE, data$FU_CL)
+attach(fudata)
+LM_fu_age<-lm(log(FU_CL) ~ AGE)
+summary(LM_fu_age)
+resid(LM_fu_age)
+fitted(LM_fu_age)
+plot(AGE,logFUCL,cex = 1.5,cex.axis=1.5,cex.lab=1.5, ylab=
+       "5-FU Clearance (L/min))",xlab="Age (yrs)", pch = 16)
+lines(AGE, fitted(LM_fu_age),lwd = 3.0,col="blue")
+
+```
+
+#### CL vs BSA
+```{r}
+plot(fudata$BSA, data$FU_CL)
+attach(fudata)
+LM_fu_bsa<-lm(log(FU_CL) ~ BSA)
+summary(LM_fu_bsa)
+resid(LM_fu_bsa)
+fitted(LM_fu_bsa)
+plot(BSA,FU_CL,cex = 1.5,cex.axis=1.5,cex.lab=1.5, ylab=
+       "5-FU Clearance (L/min))",xlab="BSA (m**2)", pch = 16)
+lines(BSA, fitted(LM_fu_bsa),lwd = 3.0,col="blue")
+
+```
+
+
+#### CL vs MTX
+```{r}
+plot(fudata$MTX, data$FU_CL)
+attach(fudata)
+LM_fu_mtx<-lm(log(FU_CL) ~ factor(MTX))
+summary(LM_fu_mtx)
+resid(LM_fu_mtx)
+fitted(LM_fu_mtx)
+plot(MTX,FU_CL,cex = 1.5,cex.axis=1.5,cex.lab=1.5, ylab=
+       "5-FU Clearance (L/min))",xlab="MTX", pch = 16)
+lines(MTX, fitted(LM_fu_mtx),lwd = 3.0,col="blue")
+
+```
+
+
+
+## Scaling of continuous covariates
+##### Dose, scaled by 1000
+```{r}
+fudata$DOSE1<-DOSE/1000
+fudata$AGE1<-AGE/50
+fudata$BSA1<-BSA/1.7
+fudata$logFUCL<-log(FU_CL)
+head(fudata)
+```
+### scaled univariate analysis
+#### CL vs Dose
+
+```{r}
+attach(fudata)
+detach(fudata)
+LM_fu_dose2<-lm(fudata$logFUCL ~ fudata$DOSE1)
+summary(LM_fu_dose2)
+
+```
+
+
+#### CL vs Age
+```{r}
+LM_fu_age2<-lm(log(FU_CL) ~ fudata$AGE1)
+summary(LM_fu_age2)
+```
+
+
+#### CL vs BSA
+```{r}
+LM_fu_bsa2<-lm(log(FU_CL) ~ fudata$BSA1)
+summary(LM_fu_bsa2)
+
+```
+
+
+
+### Full model
+```{r}
+full_lm<-lm(fudata$logFUCL ~ fudata$DOSE1 + fudata$AGE1 + 
+        fudata$BSA1 + factor(fudata$SEX) + factor(fudata$MTX))
+summary(full_lm)
+```
+
+
+#### sig p-value from this F-test says at least one beta is not=0
+#### hence reject Null---
+
+#### Backward elimination to help choose estimate
+#### remove predictor with large p-value
+#### in this case, MTX predictor had highest p-value, so removed
+
+```{r}
+red_lm1<-lm(fudata$logFUCL ~ fudata$DOSE1 + fudata$AGE1 + 
+        fudata$BSA1 + factor(fudata$SEX))
+summary(red_lm1)
+```
+
+
+#### Now dose even more sig, even BSA sig now
+#### Now, remove Age b/c had highest p-value
+
+```{r}
+red_lm2<-lm(fudata$logFUCL ~ fudata$DOSE1 + fudata$BSA1 + 
+          factor(fudata$SEX))
+summary(red_lm2)
+```
+
+
+#### Final model
+```{r}
+red_lm3<-lm(fudata$logFUCL ~ fudata$DOSE1 + fudata$BSA1)
+summary(red_lm3)
+```
+
+
+
+#### Forward model building is opposite; adds one at a time
+#### Stepwise procedure does both at same time (software does this)
+
+### How to detect/remove collinear predictors
+#### find condition number (K)
+```{r}
+attach(fudata)
+mm<-model.matrix(~+AGE+BSA+DOSE+SEX+MTX)
+kappa(t(mm) %*% mm)
+
+```
+
+#### K is high, suggesting collinearity
+### When scale predictors
+```{r}
+mm1<-model.matrix(~ + fudata$AGE1 + fudata$BSA1 + fudata$DOSE1 + fudata$SEX + fudata$MTX)
+kappa(t(mm1) %*% mm1)
+
+```
+
+#### K dropped by 300,000-fold---
+### #### Final model and scaled covariates--
+```{r}
+mm2<-model.matrix(~ + fudata$BSA1 + fudata$DOSE1)
+kappa(t(mm2) %*% mm2)
+
+```
+
+### K dropped even further, now value suggests no collinearity--
+
+#### Check Regression Diagnostics, assess normality of error assumptions--
+```{r}
+par(mfrow=c(2,2))
+qqnorm(red_lm3$res,ylab="Raw Residuals",cex=1.5,cex.axis=1.5,cex.lab=1.5,pch=16)
+qqline(red_lm3$res,lwd=2.0)
+qqnorm(rstudent(red_lm3),ylab=" Studentized residuals",pch=16,cex=1.5,cex.axis=1.5,cex.lab=1.5)
+abline(0,1,lwd=2.0)
+
+```
+
+### Draw histogram of residuals, should be around zero
+```{r}
+hist(red_lm3$res,10,cex=1.5,cex.axis=1.5,cex.lab=1.5,xlab="Raw Residuals",main="")
+
+```
+
+### Boxplot of residuals, should be around zero-
+
+```{r}
+boxplot(red_lm3$res,cex=1.5,cex.axis=1.5,cex.lab=1.5,pch=16,ylab="Raw Residuals")
+
+```
+
+#### Check constant variance assumption---
+### Plot residual on y-axis, predicted log(CL) on x-axis, residuals should be zero--
+```{r}
+par(mfrow=c(1,2))
+plot(fudata$logFUCL, red_lm3$res, cex=1.5,cex.axis=1.5,cex.lab=1.5,xlab="log(5FU CL)",
+     ylab="Residuals")
+abline(0,0,lwd=2.0)
+
+```
+
+
+#### Calculate leverage (influence in x-direction) with "hat function"--
+```{r}
+x<-model.matrix(red_lm3)
+lev<-hat(x)
+
+```
+
+### plot leverage--
+```{r}
+par(mfrow=c(1,1))
+plot(lev,ylab="Leverage",cex=2.0,cex.lab=1.5,cex.axis = 1.5,pch = 16)
+abline(0.23,0, lwd=1.5)
+names(lev)<-ID
+lev[lev>0.23]
+
+```
+
+### Rule of thumb, if lev>2*p/n, then influential---
+
+### Calculate standardized residuals (influence in y-directon)
+### if residuals > +/- 2, then they're outliers
+```{r}
+par(mfrow=c(1,2))
+plot(red_lm3$res,ylab="Residuals",cex=1.5,cex.lab=1.5,cex.axis = 1.5,pch= 16)
+
+```
+
+#### extract standardized outliers--
+```{r}
+plot(rstandard(red_lm3),ylab="StandardizedResiduals",cex=1.5,cex.lab=1.5,
+     cex.axis = 1.5,pch = 16,ylim=c(-3,3))
+abline(h=-2)
+abline(h=2)
+
+```
+
+### Extract studentized outliers--
+```{r}
+plot(rstudent(red_lm3),ylab="Studentized Residuals",cex=1.5,cex.lab=1.5,cex.axis = 1.5,pch = 16,ylim=c(-3,3))
+abline(h=-2)
+abline(h=2)
+
+```
+
+#### check measures of fits
+```{r}
+influence.measures(red_lm3)
+#### those rows (subjects) with astericks are outliers
+```
+
+
+
+
+#### Interpretation of Categorical Covariates
+
+### bivariate analysis
+### dose/response with dDBP
+### add 40 random 0 or 1 (males=0, females=1)
+
+```{r}
+Sex<-rbinom(40,1,0.50)
+data$SEX<-Sex
+head(data)
+Sex1<-factor(data$SEX)
+attach(data)
+drlm<-lm(resp ~ dose + Sex1)
+summary(drlm)
+
+plot(dose,resp,cex = 1.5,cex.axis=1.5,cex.lab=1.5, ylab=
+       "dDBP(mmHg)",xlab="Dose(mg)", pch = 16)
+abline(1.6093, -0.9855, col="blue", lwd=2.5)
+(1.6093)+(-2.6376)
+abline(-1.0283, -0.9855, col="red", lwd=2.5)
+legend("topright", lwd=c(1,1),col=c("blue", "red"), 
+  legend = c("Males", "Females"))
+
+```
+
