@@ -32,7 +32,7 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 ##### Exploratory plots
 
-##### Conc vs time curve, all together---
+##### Conc vs time curve, all together
 ```{r}
 plot1<-ggplot(data = pain, aes(x = TIME, y = CONC, group=DOSE))+geom_point()+
   xlab("Time (hr)")+
@@ -50,7 +50,7 @@ plot1+theme(panel.background = element_rect(fill='grey', colour='red'))+
 ```
 
 
-#### group data by DOSE and plot ####
+#### group data by DOSE and plot
 ```{r}
 pain.2<-groupedData(CONC~TIME|DOSE, data=pain, 
      labels = list(x="Time(hr)", y="Conc(ng/mL)"))
@@ -68,7 +68,7 @@ plot23<-ggplot(data=pain, aes(x=TIME, y=CONC))+
 ```
 
 
-#### log-transform the drug concentration ###
+#### log-transform the drug concentration
 ```{r}
 pain.2$logConc<-log(pain.2$CONC)
 pain.2log<-groupedData(logConc~TIME|DOSE, data=pain.2, 
@@ -95,7 +95,7 @@ table(pain$PAINRELIEF, pain$DOSE)
 
 ```
 
-###### cross tabulations-----
+###### cross tabulations
 ```{r}
 ###just look at binary resp (nstat) by month--
 ftable(addmargins(xtabs(~PAINRELIEF+TIME,data=pain)))
@@ -108,9 +108,9 @@ ftable((xtabs(~DOSE+PAINRELIEF+TIME,data=pain)))
 
 ```
 
-### To identify potential predictor variables---
+### To identify potential predictor variables
 ```{r}
-###### Re arrange data for stacked bar chart---------------
+###### Re arrange data for stacked bar chart
 
 count1<-ftable(xtabs(~PAINRELIEF+DOSE,data=pain))
 count1
@@ -125,9 +125,9 @@ head(mydf)
 
 ```
 
-###plot it--
+###plot it
 ```{r}
-###### Stacked bar chart---------------
+###### Stacked bar chart
 plot4<-ggplot(mydf, aes(x= Dose, y= Count, fill=PainRelief)) +
   geom_bar(stat="identity")
 plot41<-ggplot(mydf, aes(x= Dose, y= Count, fill=PainRelief)) +
@@ -145,7 +145,7 @@ plot4+ theme(panel.background = element_rect(fill='gray', colour='red'))+
 
 ```
 
-##### count of pain relief by time ####
+##### count of pain relief by time
 
 
 ```{r}
@@ -193,7 +193,7 @@ head(mydf3)
 
 ```
 
-###### Stacked bar chart---------------
+###### Stacked bar chart
 ```{r}
 
 ggplot(mydf3, aes(x= Dose, y= Count, fill=PainRelief)) +
@@ -202,7 +202,7 @@ ggplot(mydf3, aes(x= Dose, y= Count, fill=PainRelief)) +
 ```
 
 
-##### count of pain relief by time ####
+##### count of pain relief by time
 ```{r}
 count4<-ftable(xtabs(~PAINRELIEF+TIME,data=nopain))
 mydf4 = melt(count4)
@@ -214,7 +214,7 @@ write.csv(mydf4, file="mydf4.csv")
 ```
 
 
-#### Overlaid plots ###
+#### Overlaid plots
 ```{r}
 ggplot() + 
   geom_bar(data=mydf4, aes(x = Time, weight = Count))
@@ -249,8 +249,8 @@ par(mar=c(5, 4, 4, 6) + 0.1)
 ```
 
 ### mar - A numeric vector of length 4, which sets the margin sizes in the 
-##### following order: bottom, left, top, and right. #####
-##### The default is c(5.1, 4.1, 4.1, 2.1) ####
+##### following order: bottom, left, top, and right.
+##### The default is c(5.1, 4.1, 4.1, 2.1)
 ## Plot first set of data and draw its axis
 ```{r}
 plot(pain$TIME, pain$CONC, pch=16, axes=FALSE, ylim=c(0,10), xlab="", ylab="", 
@@ -298,7 +298,7 @@ mtext("z", side=4, line=3)
 
 ###### NCA analysis on pain data to get PK values ###
 
-### Perform NCA ####
+### Perform NCA
 
 
 ## By default it is groupedData; convert it to a data frame for use--
@@ -318,13 +318,13 @@ knitr::kable(d.dose,
 
 ```
 
-### by dose
+### By dose
 ```{r}
 my.dose <- PKNCAdose(d.dose, DOSE~TIME|ID)
 my.dose
 ```
 
-#### combine dose and conc data ##
+#### Combine dose and conc data
 ```{r}
 my.data.automatic <- PKNCAdata(my.conc, my.dose)
 summary(my.data.automatic)
@@ -333,14 +333,14 @@ knitr::kable(my.data.automatic$intervals)
 
 ```
 
-### compute parameters ###
+### Compute parameters
 ```{r}
 my.results.automatic <- pk.nca(my.data.automatic)
 summary(my.results.automatic)
 
 ```
 
-### specify start/stop times ####
+### Specify start/stop times
 ```{r}
 my.intervals <- data.frame(start=0.0,
                            end=Inf,
@@ -365,17 +365,17 @@ knitr::kable(summary(my.results.manual))
 
 ```
 
-### make a data.frame for PK manual results###
+### Make a data.frame for PK manual results
 ```{r}
 PKresults<-my.results.manual$result
 ```
 
-#### drop first two columns in PK results ###
+#### Drop first two columns in PK results
 ```{r}
 PKresults1<-PKresults[c(-1, -2)]
 ```
 
-#### subset out only t=0hr rows in main data.frame ###
+#### Subset out only t=0hr rows in main data.frame
 ```{r}
 pain.0<-pain[pain$TIME==0,]
 
@@ -383,26 +383,26 @@ PKresults2<-t(PKresults1)
 
 ```
 
-### melt PK data ###
+### Melt PK data
 ```{r}
 mPKresults<-melt(PKresults1, id=c("ID", "PPTESTCD"))
 ```
 
-### cast the melted data ##
-### cast(data, formula, function) ###
+### Cast the melted data
+### Cast(data, formula, function)
 ```{r}
 PKresults3<-dcast(mPKresults, ID~variable+PPTESTCD)
 write.csv(PKresults3, file="PKNCAresults.csv")
 ```
 
-#### Cbind pk results to subsetted data.frame ###
+#### Cbind pk results to subsetted data.frame
 ```{r}
 pain.nca<-cbind2(PKresults3, pain.0)
 head(pain.nca)
 write.csv(pain.nca, file="FinalPKNCA.csv")
 ```
 
-### drop columns except cmax, auclast, HL ###
+### Drop columns except cmax, auclast, HL
 ```{r}
 pain.nca1<-pain.nca[c(-2, -4,-7,-8,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,
                       -19,-20,-21,-22,-23,-24,-25,-27)]
@@ -415,8 +415,7 @@ nca<-read.csv("FinalPKNCA1.csv", header=TRUE)
 
 ```
 
-### plot overlay of dose vs AUC, with dose vs PainRelief ###
-## to show that increasing exposure does NOT increase response ###
+### Plot overlay of dose vs AUC, with dose vs PainRelief to show that increasing exposure does NOT increase response
 ```{r}
 boxplot(PPORRES_auclast ~ DOSE, data = nca, main="AUClast by Dose", xlab="Dose (mg)",
         ylab="AUClast (hr*ng/mL)")
@@ -427,7 +426,7 @@ boxplot(PPORRES_cmax ~ DOSE, data = nca, main="Cmax by Dose", xlab="Dose (mg)",
 
 
 
-#### generalized linear mixed models for longitudinal binary responses----
+#### Generalized linear mixed models for longitudinal binary responses
 
 ###### Fit a marginal model-----------------------
 ```{r}
@@ -438,26 +437,26 @@ summary(pain_gee1)
 
 ```
 
-###### Hypothesis testing--------
+###### Hypothesis testing
 ```{r}
 teststat.gee1<-round(summary(pain_gee1)$coefficients,4)
 ```
 
-#### calculate p-value ------
+#### Calculate p-value
 ```{r}
 pval1<-round(pnorm(abs(teststat.gee1[,5]),lower.tail=FALSE)*2,4)
 ```
 
-## final table-------
+## Final table
 ```{r}
 
 cbind(teststat.gee1,pval1)
 ```
 
 
-### independenet matrix not correct, try exchangeable--
+### Independenet matrix not correct, try exchangeable
 
-###### Exchangeable correlation ----------
+###### Exchangeable correlation
 ```{r}
 pain_gee2<- gee(PAINRELIEF ~ as.factor(DOSE)+CONC+TIME, data = pain, 
     family = "binomial", id = ID, corstr = "exchangeable", 
@@ -468,7 +467,7 @@ round(summary(pain_gee2)$working.correlation,3)
 
 ```
 
-#### Auto-regressive correl matix---
+#### Auto-regressive correl matrix
 ```{r}
 pain_gee3<-gee(PAINRELIEF~ as.factor(DOSE)+CONC+TIME, data = pain, 
     family="binomial",  id=ID, corstr="AR-M", 
@@ -479,7 +478,7 @@ round(summary(pain_gee3)$working.correlation,3)
 
 ```
 
-#### Unstructured matrix---
+#### Unstructured matrix
 ```{r}
 pain_gee4<-gee(PAINRELIEF~as.factor(DOSE)+CONC+TIME, data=pain, 
     family="binomial", id=ID, corstr="unstructured", 
@@ -490,28 +489,28 @@ round(summary(pain_gee4)$working.correlation,3)
 
 ```
 
-####Looks the best----
+#### Looks the best
 
-###### Full Model Hypothesis Testing--------
+###### Full Model Hypothesis Testing
 ```{r}
 teststat.gee4<-round(summary(pain_gee4)$coefficients,4)
 ```
 
-#### calculate p-value ------
+#### Calculate p-value
 ```{r}
 
 pval4<-round(pnorm(abs(teststat.gee4[,5]),lower.tail=FALSE)*2,4)
 
 ```
 
-## final table-------
+## Final table
 ```{r}
 cbind(teststat.gee4,pval4)
 
 ```
 
 
-#### Baseline model; intercept-only model---
+#### Baseline model; intercept-only model
 ```{r}
 pain_geeBL<-gee(PAINRELIEF~1, data=pain, family="binomial", 
     id=ID, corstr="unstructured", scale.fix=TRUE, scale.value=1)
@@ -521,7 +520,7 @@ round(summary(pain_geeBL)$working.correlation,3)
 
 ```
 
-##### odds ratio and CI for baseline as predictor---
+##### Odds ratio and CI for baseline as predictor
 ```{r}
 se.BL <- summary(pain_geeBL)$coefficients["(Intercept)","Robust S.E."]
 ci.BL<-exp(coef(pain_geeBL)["(Intercept)"] + c(-1,1) * se.BL * qnorm(0.975))
@@ -529,17 +528,17 @@ cbind(OR=exp(coef(pain_geeBL)["(Intercept)"]),ci.BL)
 
 ```
 
-###### Base Model Hypothesis Testing--------
+###### Base Model Hypothesis Testing
 ```{r}
 teststat.geeBL<-round(summary(pain_geeBL)$coefficients,5)
 ```
 
-#### calculate p-value ------
+#### Calculate p-value
 ```{r}
 pval.BL<-pnorm(abs(teststat.geeBL[,5]),lower.tail=FALSE)*2
 ```
 
-## final table-------
+## Final table
 ```{r}
 cbind(teststat.geeBL,pval.BL)
 
@@ -549,8 +548,8 @@ baselineprob
 ```
 
 
-### interpretation of population averages through odds ratios---
-###### Oddsratio and confidence inetrval--------------- 
+### Interpretation of population averages through odds ratios
+###### Oddsratio and confidence inetrval 
 ```{r}
 se.dose5 <- summary(pain_gee4)$coefficients["as.factor(DOSE)5","Robust S.E."]
 ci.dose5<-exp(coef(pain_gee4)["as.factor(DOSE)5"] + c(-1,1) * se.dose5 * qnorm(0.975))
@@ -566,7 +565,7 @@ cbind(OR=exp(coef(pain_gee1)["as.factor(DOSE)80"]),ci.dose80)
 
 ```
 
-#### Generalized linear mixed effects model (GLMM)---
+#### Generalized linear mixed effects model (GLMM)
 
 ```{r}
 DOSE0520<-pain$DOSE[pain$DOSE<80]
@@ -574,7 +573,7 @@ DOSE0520
 
 ```
 
-#### Baseline model (intercept-only)---
+#### Baseline model (intercept-only)
 ```{r}
 pain.glmmBL<-glmer(PAINRELIEF ~ 1+(1|ID),data = pain, family = binomial, REML=F)
 pain.glmmBL
@@ -582,30 +581,30 @@ summary(pain.glmmBL)
 
 ```
 
-#### FULL model---
+#### FULL model
 ```{r}
 pain.glmm<-glmer(PAINRELIEF ~ as.factor(DOSE)+TIME+CONC+(1|ID),data = pain, 
         family = binomial, REML=F)
 summary(pain.glmm)
 ```
 
-######Test the significance of adding ALL covariates = Full model vs base------------ 
+###### Test the significance of adding ALL covariates = Full model vs base
 
 
-##loglikelihood ratio test (2*(LLfull-LLbase/red)) ---
+## loglikelihood ratio test (2*(LLfull-LLbase/red))
 ```{r}
 lrt.BLFull = 2*((-1020.7) - (-1089.131))
 lrt.BLFull
 ```
 
-### Determine chi squared critical value for df1--
+### Determine chi squared critical value for df1
 ```{r}
 qchisq(0.95,5)
 lrtest(pain.glmm, pain.glmmBL)
 
 ```
 
-### Added random effect to CONC and ID--
+### Added random effect to CONC and ID
 ```{r}
 pain.glmm1<-glmer(PAINRELIEF ~ as.factor(DOSE)+TIME+CONC+(1|ID)+(1|CONC),
         data = pain, family = binomial, REML=TRUE)
@@ -614,13 +613,13 @@ lrtest(pain.glmm1, pain.glmm)
 
 ```
 
-### output full fixed effect data--
+### output full fixed effect data
 ```{r}
 exp(fixef(pain.glmm1))
 ```
 
 
-### Added random effect to CONC and ID, REMOVED 'TIME'--
+### Added random effect to CONC and ID, REMOVED 'TIME'
 ```{r}
 pain.glmm2<-glmer(PAINRELIEF ~ as.factor(DOSE)+CONC+(1|ID)+(1|CONC),
           data = pain, family = binomial, REML=F)
@@ -631,14 +630,14 @@ lrtest(pain.glmm1, pain.glmm2)
 ```
 
 
-### Removed CONC and RE on CONC--
+### Removed CONC and RE on CONC
 ```{r}
 pain.glmm3<-glmer(PAINRELIEF ~ as.factor(DOSE)+(1|ID),data = pain, family = binomial, REML=F)
 summary(pain.glmm3)
 
 ```
 
-#####Compare gee, glmm and glm fits------
+##### Compare gee, glmm and glm fits
 ```{r}
 out.compare <- round(cbind(exp(coef(pain_gee4)), exp(fixef(pain.glmm1))),3)
 rownames(out.compare) <- names(coef(pain_gee4))
