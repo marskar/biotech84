@@ -178,8 +178,9 @@ data0<-data1[data1$Time==0,]
 ```
 
 #### Drop the log conc column
-data0.1<-data0[c(-11)]
+
 ```{r}
+data0.1<-data0[c(-11)]
 PKresults2<-t(PKresults1)
 ```
 
@@ -248,11 +249,20 @@ summary(my.results.manual.race)
 
 ###  PK Correlations with Patient Demographics
 
+#### Look at pairs documentation
+```{r}
+?pairs
+```
+
 #### Scatter plot matrix for broad overview
 ```{r}
+# Convert PPORRES class to numeric
+class(alldata$PPORRES_cmax)<-"numeric"
+class(alldata$PPORRES_aucinf.obs)<-"numeric"
+
 # Basic Scatterplot Matrix for exposure vs continuous variables only
 pairs(~PPORRES_cmax+PPORRES_aucinf.obs +Age + Weight +
-        SCreatinine+SerumALT,data=alldata1, 
+        SCreatinine+SerumALT,data=alldata, 
       main="Scatterplot Matrix for exposure vs continuous variables only")
 write.csv(alldata, file="alldata1")
 alldata1<-read.csv("alldata1", header=TRUE)
@@ -288,7 +298,7 @@ plot.clwt+ theme(panel.background = element_rect(fill='grey', colour='red'))+
 #### CL by Age
 ```{r}
 plot(alldata$Age, alldata$PPORRES_cl.obs)
-plot.clage<- ggplot() + geom_point(data = alldata, aes(x=Age, y = PPORRES_cl), size=2.5, colour='blue') +
+plot.clage<- ggplot() + geom_point(data = alldata, aes(x=Age, y = PPORRES_cl.obs), size=2.5, colour='blue') +
   xlab('Age(yr)') +
   ylab('Clearance(L/hr)')
 plot.clage+ theme(panel.background = element_rect(fill='grey', colour='red'))+
@@ -312,7 +322,7 @@ plot(alldata$Age, alldata$PPORRES_cl.obs)
 #### CL by Gender
 ```{r}
 plot(alldata1$Gender, alldata1$PPORRES_cl.obs)
-plot.clsex<- ggplot() + geom_boxplot(data = alldata, aes(x=Gender, y = PPORRES_cl), size=1.5, colour='blue') +
+plot.clsex<- ggplot() + geom_boxplot(data = alldata, aes(x=Gender, y = PPORRES_cl.obs), size=1.5, colour='blue') +
   xlab('Sex)') +
   ylab('Clearance(L/hr)')
 plot.clsex+ theme(panel.background = element_rect(fill='grey', colour='red'))+
@@ -333,7 +343,7 @@ plot.clsex+ theme(panel.background = element_rect(fill='grey', colour='red'))+
 ```{r}
 par(mfrow=c(1,1))
 plot(alldata1$Race, alldata1$PPORRES_cl.obs)
-plot.clrace<- ggplot() + geom_boxplot(data = alldata, aes(x=Race, y = PPORRES_cl), size=1.5, colour='blue') +
+plot.clrace<- ggplot() + geom_boxplot(data = alldata, aes(x=Race, y = PPORRES_cl.obs), size=1.5, colour='blue') +
   xlab('Race') +
   ylab('Clearance(L/hr)')
 plot.clrace+ theme(panel.background = element_rect(fill='grey', colour='red'))+
@@ -451,8 +461,8 @@ par(mfrow=c(1,1))
 
 #### AUCinf by WT
 ```{r}
-plot(alldata$Weight, alldata$PPORRES_aucinf)
-plot.aucinfwt<- ggplot() + geom_point(data = alldata, aes(x=Weight, y = PPORRES_aucinf), size=2.5, colour='blue') +
+plot(alldata$Weight, alldata$PPORRES_aucinf.obs)
+plot.aucinfwt<- ggplot() + geom_point(data = alldata, aes(x=Weight, y = PPORRES_aucinf.obs), size=2.5, colour='blue') +
   xlab('Weight (kg)') +
   ylab('AUCinf (hr*ng/mL))')
 plot.aucinfwt+ theme(panel.background = element_rect(fill='grey', colour='red'))+
@@ -470,8 +480,8 @@ plot.aucinfwt+ theme(panel.background = element_rect(fill='grey', colour='red'))
 
 #### AUCinf by Age
 ```{r}
-plot(alldata$Age, alldata$PPORRES_aucinf)
-plot.aucinfage<- ggplot() + geom_point(data = alldata, aes(x=Age, y = PPORRES_aucinf), size=2.5, colour='blue') +
+plot(alldata$Age, alldata$PPORRES_aucinf.obs)
+plot.aucinfage<- ggplot() + geom_point(data = alldata, aes(x=Age, y = PPORRES_aucinf.obs), size=2.5, colour='blue') +
   xlab('Age(yr)') +
   ylab('AUCinf (hr*ng/mL)')
 plot.aucinfage+ theme(panel.background = element_rect(fill='grey', colour='red'))+
@@ -487,14 +497,14 @@ plot.aucinfage+ theme(panel.background = element_rect(fill='grey', colour='red')
 
 
 par(mfrow=c(1,2))
-plot(alldata$Weight, alldata$PPORRES_aucinf)
-plot(alldata$Age, alldata$PPORRES_aucinf)
+plot(alldata$Weight, alldata$PPORRES_aucinf.obs)
+plot(alldata$Age, alldata$PPORRES_aucinf.obs)
 ```
 
 ##### AUCinf by Gender ####
 ```{r}
-plot(alldata$Gender, alldata$PPORRES_aucinf)
-plot.aucinfsex<- ggplot() + geom_boxplot(data = alldata, aes(x=Gender, y = PPORRES_aucinf), size=1.5, colour='blue') +
+plot(alldata$Gender, alldata$PPORRES_aucinf.obs)
+plot.aucinfsex<- ggplot() + geom_boxplot(data = alldata, aes(x=Gender, y = PPORRES_aucinf.obs), size=1.5, colour='blue') +
   xlab('Sex)') +
   ylab('AUCinf (hr*ng/mL)')
 plot.aucinfsex+ theme(panel.background = element_rect(fill='grey', colour='red'))+
@@ -512,8 +522,8 @@ plot.aucinfsex+ theme(panel.background = element_rect(fill='grey', colour='red')
 ##### AUCinf by Race ####
 ```{r}
 par(mfrow=c(1,1))
-plot(alldata$Race, alldata$PPORRES_aucinf)
-plot.aucinfrace<- ggplot() + geom_boxplot(data = alldata, aes(x=Race, y = PPORRES_aucinf), size=1.5, colour='blue') +
+plot(alldata$Race, alldata$PPORRES_aucinf.obs)
+plot.aucinfrace<- ggplot() + geom_boxplot(data = alldata, aes(x=Race, y = PPORRES_aucinf.obs), size=1.5, colour='blue') +
   xlab('Race') +
   ylab('AUCinf (hr*ng/mL)')
 plot.aucinfrace+ theme(panel.background = element_rect(fill='grey', colour='red'))+
@@ -528,6 +538,6 @@ plot.aucinfrace+ theme(panel.background = element_rect(fill='grey', colour='red'
   theme(legend.text = element_text(colour="blue", size = 12, face = "bold"))
 
 par(mfrow=c(1,2))
-plot(alldata$Gender, alldata$PPORRES_aucinf)
-plot(alldata$Race, alldata$PPORRES_aucinf)
+plot(alldata$Gender, alldata$PPORRES_aucinf.obs)
+plot(alldata$Race, alldata$PPORRES_aucinf.obs)
 ```
