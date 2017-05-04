@@ -21,7 +21,7 @@ When you save the notebook, an HTML file containing the code and output will be 
 For additional useful keyboard shortcuts, please visit [this website](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts)
 
 ## Goal of this notebook
-In this notebook, we will use the Theoph Dataset to practice subsetting and plotting in R. The dataset and plotting system are built-in, so there is not need to download any additional packages for expanded plotting capabilities.
+In this notebook, we will use the Theoph Dataset to practice subsetting and plotting in R. We will also learn how to create a new dataset using simulation. The dataset and plotting system are built-in, so there is not need to download any additional packages for expanded plotting capabilities. 
 
 ## Exploring the Theoph dataset
 Theoph is one of many example datasets in R.

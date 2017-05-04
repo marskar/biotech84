@@ -5,11 +5,11 @@ output: html_notebook
 
 # About
 
-This material is adapted from Roger Peng's [Exploratory Data Analysis Course](https://www.coursera.org/learn/exploratory-data-analysis).
+This material is adapted from Roger Peng's [Exploratory Data Analysis Course](https://www.coursera.org/learn/exploratory-data-analysis), which is part of the [Coursera Data Science Specialization](https://www.coursera.org/specializations/jhu-data-science) created Jeff Leek, Roger Peng and Brian Caffo of the Johns Hopkins Bloomberg School of Public Health. I highly recommend this Specialization!
 
-You can see Roger's original [source code](https://github.com/DataScienceSpecialization/courses/tree/master/04_ExploratoryAnalysis) on GitHub.
+I also recommend looking at Roger Peng's [Exploratory Data Analysis Course](https://leanpub.com/exdata/), which is available for little or no money (you decide!) on [Leanpub](https://leanpub.com).
 
-I also recommend looking at the [repo for Roger's book](https://github.com/rdpeng/exdata), which is available for little or no money (you decide!) on [Leanpub](https://leanpub.com/exdata/).
+You can see the original source code for the [course](https://github.com/DataScienceSpecialization/courses/tree/master/04_ExploratoryAnalysis) and [book](https://github.com/rdpeng/exdata) on [GitHub](https://github.com).
 
 
 ## Load ggplot2 package
