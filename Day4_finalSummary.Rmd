@@ -385,11 +385,11 @@ legend("topleft",c("80mg","20 mg", "5mg", "Placebo"),lty=c(1,3),
 
 
 
-### bind AUC exposure data to remed data ##
+### Bind AUC exposure data to remed data ##
 ```{r}
 ## Use the FinalPKNCA1.csv created by Day3_pmsection.R or Day3_PMpain.Rmd
 nca<-read.csv("FinalPKNCA1.csv", header=TRUE)
-View(nca)
+
 remed2<-cbind(remed,nca$PPORRES_auclast)
 remed3<-cbind(remed2, nca$DOSE)
 
@@ -414,26 +414,19 @@ summary(cph.full)
 ```
 
 
-#### reduced Model w/o AUC
+#### Reduced Model w/o AUC
 ```{r}
 cph.red<- coxph(Surv(REMEDTime, REMEDStatus) ~ DOSE, 
       data = remed4, ties="breslow") 
-cph.red
+print(cph.red)
 summary(cph.red)
-?plot
-plot(cph.red,lty=c(1,3),cex=1.8,cex.lab=1.5,cex.axis=1.5, 
-     main="Probability of Remedication by Dose", xlab="Time (hr)",
-     ylab="Probability of Remedication", lwd=3.0, 
-     col=c("red","blue", "green", "black"))
-legend("bottomleft",c("80mg","20 mg", "5mg", "Placebo"),lty=c(1,3),
-       col=c("green","red", "blue", "black"), 
-       cex=1.0,lwd=1.0, bty="n")
-abline(h=0.5)
+class(cph.red)
+
 ```
 
 
 
-######Test the significance of placebo 
+###### Test the significance of placebo 
 ```{r}
 names(remed4)
 cph4.noplaceb <- coxph(Surv(REMEDTime, REMEDStatus) ~ nca$PPORRES_auclast, data = remed4, ties="breslow") 
