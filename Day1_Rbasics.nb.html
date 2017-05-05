@@ -177,7 +177,7 @@ $(document).ready(function () {
 <p>This is an <a href="http://rmarkdown.rstudio.com">R Markdown</a> Notebook. When you execute code within the notebook, the results appear beneath the code.</p>
 <div id="execute-code-chunks" class="section level3">
 <h3>Execute code chunks</h3>
-<p>Execute code chunks by clicking the <em>Run</em> button within the chunk or by placing your cursor inside it and pressing <em>Ctrl+Shift+Enter</em>.</p>
+<p>Execute code chunks by clicking the <em>Run</em> button within the chunk or by placing your cursor inside it and pressing <em>Ctrl+Shift+Enter</em>. You can run all code chunks by pressing <em>Ctrl+Alt+R</em> or clicking the downward arrow next to the <em>Run</em> button and selecting the final option.</p>
 </div>
 <div id="insert-code-chunks" class="section level3">
 <h3>Insert code chunks</h3>
@@ -186,7 +186,7 @@ $(document).ready(function () {
 <div id="preview-notebook" class="section level3">
 <h3>Preview Notebook</h3>
 <p>When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the <em>Preview</em> button or press <em>Ctrl+Shift+K</em> to preview the HTML file).</p>
-<p>For additional useful keyboard shortcuts, please visit <a href="https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts">this website</a></p>
+<p>For additional useful keyboard shortcuts, please visit <a href="https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts">this website</a>.</p>
 </div>
 </div>
 <div id="goal-of-this-notebook" class="section level2">
@@ -197,9 +197,10 @@ $(document).ready(function () {
 <h1>Our 1st object!</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBMZXTDouKCrOKEonMgY3JlYXRlIG91ciBmaXJzdCBvYmplY3QgaW4gUiFcbnZhbDwtM1xuYGBgXG5gYGAifQ== -->
-<p><code>r</code>r # Letâs create our first object in R! val&lt;-3</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMZXQncyBjcmVhdGUgb3VyIGZpcnN0IG9iamVjdCBpbiBSIVxuXG52YWw8LTNcbmBgYCJ9 -->
+<pre class="r"><code># Let's create our first object in R!
+
+val&lt;-3</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -212,9 +213,10 @@ $(document).ready(function () {
 <p>Make a vector called vec:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBMZXTDouKCrOKEonMgY3JlYXRlIGEgdmVjdG9yXG52ZWMgPC0gYygxLCAyLCAzLCA0LCA1LCA2KVxuYGBgXG5gYGAifQ== -->
-<p><code>r</code>r # Letâs create a vector vec &lt;- c(1, 2, 3, 4, 5, 6)</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMZXQncyBjcmVhdGUgYSB2ZWN0b3JcbnZlYyA8LSBjKDEsIDIsIDMsIDQsIDUsIDYpXG5cbmBgYCJ9 -->
+<pre class="r"><code># Let's create a vector
+vec &lt;- c(1, 2, 3, 4, 5, 6)
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -222,6 +224,9 @@ $(document).ready(function () {
 <p>Make a list called ls:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubHMgPC0gbGlzdCgxLCAyLCAzLCBcImFcIiwgXCJiXCIsIFwiY1wiKVxuYGBgIn0= -->
+<pre class="r"><code>ls &lt;- list(1, 2, 3, &quot;a&quot;, &quot;b&quot;, &quot;c&quot;)</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -231,9 +236,9 @@ $(document).ready(function () {
 <p>Make a matrix called m:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubTwtIG1hdHJpeChjKDEsMiwzLDQsNSw2KSwgbnJvdyA9MilcbmBgYFxuYGBgIn0= -->
-<p><code>r</code>r m&lt;- matrix(c(1,2,3,4,5,6), nrow =2)</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubTwtIG1hdHJpeChjKDEsMiwzLDQsNSw2KSwgbnJvdyA9MilcblxuYGBgIn0= -->
+<pre class="r"><code>m&lt;- matrix(c(1,2,3,4,5,6), nrow =2)
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -241,6 +246,10 @@ $(document).ready(function () {
 <p>Make a data frame called df:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYgPC0gZGF0YS5mcmFtZSh4ID0gMTozLCB5ID0gYyhcImFcIiwgXCJiXCIsIFwiY1wiKSlcblxuYGBgIn0= -->
+<pre class="r"><code>df &lt;- data.frame(x = 1:3, y = c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;))
+</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -249,20 +258,14 @@ $(document).ready(function () {
 <p>There are three main ways to subset objects:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZGZbMl0gXG5gYGBcbmBgYHJcbmRmW3ldIFxuYGBgXG5gYGAifQ== -->
-<p><code>r</code>r df[2] <code></code>r df[y]</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGZbMl0gXG5kZlt5XSBcbmRmW1syXV1cbmRmW1t5XV1cbmRmJHlcblxuYGBgIn0= -->
+<pre class="r"><code>df[2] 
+df[y] 
+df[[2]]
+df[[y]]
+df$y
+</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gYFsuZGF0YS5mcmFtZWAoZGYsIHkpIDogb2JqZWN0ICd5JyBub3QgZm91bmRcbiJ9 -->
-<pre><code>Error in `[.data.frame`(df, y) : object 'y' not found</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjoiZGF0YS5mcmFtZSIsIm5jb2wiOjEsIm5yb3ciOjN9LCJyZGYiOiJINHNJQUFBQUFBQUFCbTFRd1c3RElBeDFJTm1VU0owaTdUc2FhVDMxQS9vRk8vVktDTjJpTVlnSTdkcGJ2enliSVhqUzBEaVloM24yOC9QcjRiaHJqZzBBTU9BbFJvNndaQmdLS0tFTzl4V0FQOGNFOEEzZWZNWEFWdnlIL0tEVlJla1pVUnQvVXd0Qm9DY2dzOEpLYWpGVDNXKzNrNURlT2tSTFRqZmlVK1gwNHBheGFtZS9PbUtHMGRrZDRrbGo4KytzUXpNSUw3cVR3NUovUkIvdDVFZHJzQmtMKzZoeWVaY2wyck1KNHNOV3ZwL054L1psSHhUUzhpQk5WS1NGRWk1V3paSW1xMmdWeXJ5TlJwRjlMWHFsMCtNSlhVYVQzZVJHNDhrS1p1Zk9XeStJMTBpcktSUE53ZklEclliSnVmNEJBQUE9In0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["y"],"name":[1],"type":["fctr"],"align":["left"]}],"data":[{"1":"a"},{"1":"b"},{"1":"c"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>The [ ] method can return multiple objects with names included</p>
@@ -365,7 +368,7 @@ df&lt;-df$B
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlI6IEJhc2ljIENvbmNlcHRzIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KIyMgSW50cm8gdG8gUiBOb3RlYm9va3MNClRoaXMgaXMgYW4gW1IgTWFya2Rvd25dKGh0dHA6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20pIE5vdGVib29rLg0KV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIA0KdGhlIHJlc3VsdHMgYXBwZWFyIGJlbmVhdGggdGhlIGNvZGUuIA0KDQojIyMgRXhlY3V0ZSBjb2RlIGNodW5rcw0KRXhlY3V0ZSBjb2RlIGNodW5rcyBieSBjbGlja2luZyB0aGUgKlJ1biogYnV0dG9uIHdpdGhpbiB0aGUgY2h1bmsNCm9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ3RybCtTaGlmdCtFbnRlciouIA0KDQojIyMgSW5zZXJ0IGNvZGUgY2h1bmtzDQpBZGQgYSBuZXcgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpJbnNlcnQgQ2h1bmsqIGJ1dHRvbiBvbiB0aGUgdG9vbGJhciBvciBieSBwcmVzc2luZyAqQ3RybCtBbHQrSSouDQoNCiMjIyBQcmV2aWV3IE5vdGVib29rDQpXaGVuIHlvdSBzYXZlIHRoZSBub3RlYm9vaywgYW4gSFRNTCBmaWxlIGNvbnRhaW5pbmcgdGhlIGNvZGUgYW5kIG91dHB1dCB3aWxsIGJlIHNhdmVkIGFsb25nc2lkZSBpdCAoY2xpY2sgdGhlICpQcmV2aWV3KiBidXR0b24gb3IgcHJlc3MgKkN0cmwrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4NCg0KRm9yIGFkZGl0aW9uYWwgdXNlZnVsIGtleWJvYXJkIHNob3J0Y3V0cywgcGxlYXNlIHZpc2l0IFt0aGlzIHdlYnNpdGVdKGh0dHBzOi8vc3VwcG9ydC5yc3R1ZGlvLmNvbS9oYy9lbi11cy9hcnRpY2xlcy8yMDA3MTE4NTMtS2V5Ym9hcmQtU2hvcnRjdXRzKQ0KDQojIyBHb2FsIG9mIHRoaXMgbm90ZWJvb2sNCkluIHRoaXMgbm90ZWJvb2ssIHdlIHdpbGwgcGVyZm9ybSB0aGUgYmFzaWMgbWFuZXV2ZXJzIG9mIFtkYXRhIHdyYW5nbGluZ10oaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvRGF0YV93cmFuZ2xpbmcpLCB3aGljaCBpcyBhbHNvIGNhbGxlZCBkYXRhIG11bmdpbmcuIEV2ZXJ5dGhpbmcgd2UgbmVlZCBpcyBidWlsdC1pbiwgc28gdGhlcmUgaXMgbm90IG5lZWQgdG8gZG93bmxvYWQgYW55IGFkZGl0aW9uYWwgcGFja2FnZXMgZm9yIGV4cGFuZGVkIGNhcGFiaWxpdGllcy4NCg0KIyBPdXIgMXN0IG9iamVjdCENCmBgYHtyfQ0KIyBMZXQncyBjcmVhdGUgb3VyIGZpcnN0IG9iamVjdCBpbiBSIQ0KDQp2YWw8LTMNCmBgYA0KDQpXaGVuIHlvdSBydW4gdGhpcyBjb2RlIGNodW5rLCB5b3Ugd2lsbCBzZWUgdGhhdCB2YWwgYXBwZWFycyBpbiB0aGUgdXBwZXIgcmlnaHQgcGFuZS4NCg0KV2UgaGF2ZSBjcmVhdGVkIGEgdmFsdWUsIGFuIG9iamVjdCB3aXRoIGEgc2luZ2xlIGRhdGEgZWxlbWVudCwgYnV0IG9iamVjdHMgY2FuIGNvbnRhaW4gbWFueSBkYXRhIGVsZW1lbnRzLg0KDQojIEF0b21pYyB2ZXJzdXMgcmVjdXJzaXZlIG9iamVjdHMNCg0KVmVjdG9ycyBhcmUgYXRvbWljIG9iamVjdHMgaS5lLiB0aGV5IGNvbnRhaW4gZGF0YSBlbGVtZW50cyB0aGF0IGFyZSBhbGwgb2YgdGhlIHNhbWUgY2xhc3MNCg0KTWFrZSBhIHZlY3RvciBjYWxsZWQgdmVjOiANCmBgYHtyfQ0KIyBMZXQncyBjcmVhdGUgYSB2ZWN0b3INCnZlYyA8LSBjKDEsIDIsIDMsIDQsIDUsIDYpDQoNCmBgYA0KTGlzdHMgYXJlIHJlY3Vyc2l2ZSBvYmplY3RzIGkuZS4gdGhleSBjYW4gY29udGFpbiBtYW55IGRpZmZlcmVudCBjbGFzc2VzIG9mIG9iamVjdHMNCg0KTWFrZSBhIGxpc3QgY2FsbGVkIGxzOiANCmBgYHtyfQ0KbHMgPC0gbGlzdCgxLCAyLCAzLCAiYSIsICJiIiwgImMiKQ0KYGBgDQoNCiNUd28tZGltZW5zaW9uYWwgT2JqZWN0cw0KDQpNYXRyaWNlcyBhcmUgYXRvbWljIG9iamVjdHMgaS5lLiB0aGV5IGNvbnRhaW4gZGF0YSBlbGVtZW50cyB0aGF0IGFyZSBhbGwgb2YgdGhlIHNhbWUgY2xhc3MNCg0KTWFrZSBhIG1hdHJpeCBjYWxsZWQgbTogIA0KYGBge3J9DQptPC0gbWF0cml4KGMoMSwyLDMsNCw1LDYpLCBucm93ID0yKQ0KDQpgYGANCg0KDQpEYXRhIGZyYW1lcyAgYXJlIHJlY3Vyc2l2ZSBvYmplY3RzIGkuZS4gdGhleSBjYW4gY29udGFpbiBtYW55IGRpZmZlcmVudCBjbGFzc2VzIG9mIG9iamVjdHMuDQoNCk1ha2UgYSBkYXRhIGZyYW1lIGNhbGxlZCBkZjogDQoNCmBgYHtyfQ0KZGYgPC0gZGF0YS5mcmFtZSh4ID0gMTozLCB5ID0gYygiYSIsICJiIiwgImMiKSkNCg0KYGBgDQoNCg0KI1N1YnNldHRpbmcgT2JqZWN0cw0KDQpUaGVyZSBhcmUgdGhyZWUgbWFpbiB3YXlzIHRvIHN1YnNldCBvYmplY3RzOg0KYGBge3J9DQpkZlsyXSANCmRmW3ldIA0KZGZbWzJdXQ0KZGZbW3ldXQ0KZGYkeQ0KDQpgYGANCg0KDQoNClRoZSBbIF0gbWV0aG9kIGNhbiByZXR1cm4gbXVsdGlwbGUgb2JqZWN0cyB3aXRoIG5hbWVzIGluY2x1ZGVkDQoNCltbIF1dIGFuZCAkIGJvdGggcmV0dXJuIHNpbmdsZSBvYmplY3RzIHdpdGhvdXQgbmFtZXMNCg0KJCBvbmx5IHdvcmtzIG9uIHJlY3Vyc2l2ZSBvYmplY3RzIGxpa2UgbGlzdHMgYW5kIGRhdGEgZnJhbWVzDQokIHdpbGwgbm90IHdvcmsgb24gYXRvbWljIG9iamVjdHMgbGlrZSB2ZWN0b3JzIGFuZCBtYXRyaWNlcw0KDQojTmFtZXMNCg0KWW91IGNhbiBzdWJzZXQgdmFyaWFibGVzIGJ5IHJvdyBvciBjb2x1bW4gbmFtZXMuDQoNCk9ubHkgdGhlIGRmIG9iamVjdCB3ZSBjcmVhdGVkIGhhcyBuYW1lcy4NCg0KWW91IGNhbiBhZGQgbmFtZXM6DQpgYGB7cn0NCm5hbWVzKGxzKTwtYygiQSIsIkIiLCJDIiwiRCIsIkUiLCJGIikNCm5hbWVzKGxzKTwtTEVUVEVSU1sxOjZdDQpjb2xuYW1lcyhtKTwtIExFVFRFUlNbMToyXQ0Kcm93bmFtZXMobSk8LSBMRVRURVJTWzI0OjI2XQ0KDQpgYGANCg0KDQpZb3UgY2FuIHJlbmFtZSBjb2x1bW5zIGFuZCByb3dzDQpgYGB7cn0NCmNvbG5hbWVzKGRmKTwtIGMoIkEiLCJCIikNCmNvbG5hbWVzKGRmKTwtIExFVFRFUlNbMToyXQ0KDQpgYGANCg0KDQojQWRkaW5nIGNvbHVtbnMNCmBgYHtyfQ0KI0FkZCBhbiB1bm5hbWVkIHRoaXJkIGNvbHVtbiB0byBkZiBhbmQgbQ0KDQpkZlssM108LTE6Mw0KbVssM108LTE6Mw0KDQojQWRkIGRmIHRvIG0gYXMgYWRkaXRpb25hbCBjb2x1bW5zOg0KZGZtYzwtY2JpbmQoZGYsbSkNCiNjYmluZCB3aWxsIG9ubHkgd29yayBpZiByb3cgbmFtZXMgbWF0Y2ghDQoNCmBgYA0KDQoNCmBgYHtyfQ0KI0FkZCBhIGNvbHVtbiBuYW1lZCBEIHRvIGRmDQpkZiREPC0xOjQNCiNUaGlzIHdpbGwgbm90IHdvcmsgZm9yIG0hDQoNCmBgYA0KDQojQWRkaW5nIHJvd3MNCg0KYGBge3J9DQoNCiMgQWRkIGFuIHVubmFtZWQgNHRoIHJvdyB0byBkZiBhbmQgbToNCmRmWzQsXTwtMTo0DQptWzQsXTwtMTo0DQoNCiMgQWRkIG0gdG8gZGYgYXMgYWRkaXRpb25hbCByb3dzOg0KZGZtcjwtcmJpbmQoZGYsbSkNCiMgcmJpbmQgd2lsbCBvbmx5IHdvcmsgaWYgY29sdW1uIG5hbWVzIG1hdGNoIQ0KDQoNCmBgYA0KDQoNCiMgUmVtb3ZpbmcgY29sdW1ucyBhbmQgcm93cw0KDQpgYGB7cn0NCiMgVG8gZGVsZXRlIHRoZSBmaXJzdCBjb2x1bW4gb2YgbToNCm0gPC0gbVsgLC0xXQ0KDQojIFRvIGRlbGV0ZSB0aGUgQiBjb2x1bW4gb2YgbToNCm0gPC0gbVstQl0NCg0KIyBUbyBkZWxldGUgdGhlIGZpcnN0IHJvdyBvZiBtOg0KbSA8LSBtWy0xLCBdDQoNCiMgVG8gcmVtb3ZlIGV2ZXJ5dGhpbmcgZXhjZXB0IGNvbHVtbiBCIGluIGRmOg0KZGY8LWRmJEINCg0KYGBgDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlI6IEJhc2ljIENvbmNlcHRzIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KIyMgSW50cm8gdG8gUiBOb3RlYm9va3MNClRoaXMgaXMgYW4gW1IgTWFya2Rvd25dKGh0dHA6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20pIE5vdGVib29rLg0KV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIA0KdGhlIHJlc3VsdHMgYXBwZWFyIGJlbmVhdGggdGhlIGNvZGUuIA0KDQojIyMgRXhlY3V0ZSBjb2RlIGNodW5rcw0KRXhlY3V0ZSBjb2RlIGNodW5rcyBieSBjbGlja2luZyB0aGUgKlJ1biogYnV0dG9uIHdpdGhpbiB0aGUgY2h1bmsNCm9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ3RybCtTaGlmdCtFbnRlciouIA0KWW91IGNhbiBydW4gYWxsIGNvZGUgY2h1bmtzIGJ5IHByZXNzaW5nICpDdHJsK0FsdCtSKiBvciBjbGlja2luZyB0aGUgZG93bndhcmQgYXJyb3cgbmV4dCB0byB0aGUgKlJ1biogYnV0dG9uIGFuZCBzZWxlY3RpbmcgdGhlIGZpbmFsIG9wdGlvbi4gDQoNCiMjIyBJbnNlcnQgY29kZSBjaHVua3MNCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDdHJsK0FsdCtJKi4NCg0KIyMjIFByZXZpZXcgTm90ZWJvb2sNCldoZW4geW91IHNhdmUgdGhlIG5vdGVib29rLCBhbiBIVE1MIGZpbGUgY29udGFpbmluZyB0aGUgY29kZSBhbmQgb3V0cHV0IHdpbGwgYmUgc2F2ZWQgYWxvbmdzaWRlIGl0IChjbGljayB0aGUgKlByZXZpZXcqIGJ1dHRvbiBvciBwcmVzcyAqQ3RybCtTaGlmdCtLKiB0byBwcmV2aWV3IHRoZSBIVE1MIGZpbGUpLg0KDQpGb3IgYWRkaXRpb25hbCB1c2VmdWwga2V5Ym9hcmQgc2hvcnRjdXRzLCBwbGVhc2UgdmlzaXQgW3RoaXMgd2Vic2l0ZV0oaHR0cHM6Ly9zdXBwb3J0LnJzdHVkaW8uY29tL2hjL2VuLXVzL2FydGljbGVzLzIwMDcxMTg1My1LZXlib2FyZC1TaG9ydGN1dHMpLg0KDQojIyBHb2FsIG9mIHRoaXMgbm90ZWJvb2sNCkluIHRoaXMgbm90ZWJvb2ssIHdlIHdpbGwgcGVyZm9ybSB0aGUgYmFzaWMgbWFuZXV2ZXJzIG9mIFtkYXRhIHdyYW5nbGluZ10oaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvRGF0YV93cmFuZ2xpbmcpLCB3aGljaCBpcyBhbHNvIGNhbGxlZCBkYXRhIG11bmdpbmcuIEV2ZXJ5dGhpbmcgd2UgbmVlZCBpcyBidWlsdC1pbiwgc28gdGhlcmUgaXMgbm90IG5lZWQgdG8gZG93bmxvYWQgYW55IGFkZGl0aW9uYWwgcGFja2FnZXMgZm9yIGV4cGFuZGVkIGNhcGFiaWxpdGllcy4NCg0KIyBPdXIgMXN0IG9iamVjdCENCmBgYHtyfQ0KIyBMZXQncyBjcmVhdGUgb3VyIGZpcnN0IG9iamVjdCBpbiBSIQ0KDQp2YWw8LTMNCmBgYA0KDQpXaGVuIHlvdSBydW4gdGhpcyBjb2RlIGNodW5rLCB5b3Ugd2lsbCBzZWUgdGhhdCB2YWwgYXBwZWFycyBpbiB0aGUgdXBwZXIgcmlnaHQgcGFuZS4NCg0KV2UgaGF2ZSBjcmVhdGVkIGEgdmFsdWUsIGFuIG9iamVjdCB3aXRoIGEgc2luZ2xlIGRhdGEgZWxlbWVudCwgYnV0IG9iamVjdHMgY2FuIGNvbnRhaW4gbWFueSBkYXRhIGVsZW1lbnRzLg0KDQojIEF0b21pYyB2ZXJzdXMgcmVjdXJzaXZlIG9iamVjdHMNCg0KVmVjdG9ycyBhcmUgYXRvbWljIG9iamVjdHMgaS5lLiB0aGV5IGNvbnRhaW4gZGF0YSBlbGVtZW50cyB0aGF0IGFyZSBhbGwgb2YgdGhlIHNhbWUgY2xhc3MNCg0KTWFrZSBhIHZlY3RvciBjYWxsZWQgdmVjOiANCmBgYHtyfQ0KIyBMZXQncyBjcmVhdGUgYSB2ZWN0b3INCnZlYyA8LSBjKDEsIDIsIDMsIDQsIDUsIDYpDQoNCmBgYA0KTGlzdHMgYXJlIHJlY3Vyc2l2ZSBvYmplY3RzIGkuZS4gdGhleSBjYW4gY29udGFpbiBtYW55IGRpZmZlcmVudCBjbGFzc2VzIG9mIG9iamVjdHMNCg0KTWFrZSBhIGxpc3QgY2FsbGVkIGxzOiANCmBgYHtyfQ0KbHMgPC0gbGlzdCgxLCAyLCAzLCAiYSIsICJiIiwgImMiKQ0KYGBgDQoNCiNUd28tZGltZW5zaW9uYWwgT2JqZWN0cw0KDQpNYXRyaWNlcyBhcmUgYXRvbWljIG9iamVjdHMgaS5lLiB0aGV5IGNvbnRhaW4gZGF0YSBlbGVtZW50cyB0aGF0IGFyZSBhbGwgb2YgdGhlIHNhbWUgY2xhc3MNCg0KTWFrZSBhIG1hdHJpeCBjYWxsZWQgbTogIA0KYGBge3J9DQptPC0gbWF0cml4KGMoMSwyLDMsNCw1LDYpLCBucm93ID0yKQ0KDQpgYGANCg0KDQpEYXRhIGZyYW1lcyAgYXJlIHJlY3Vyc2l2ZSBvYmplY3RzIGkuZS4gdGhleSBjYW4gY29udGFpbiBtYW55IGRpZmZlcmVudCBjbGFzc2VzIG9mIG9iamVjdHMuDQoNCk1ha2UgYSBkYXRhIGZyYW1lIGNhbGxlZCBkZjogDQoNCmBgYHtyfQ0KZGYgPC0gZGF0YS5mcmFtZSh4ID0gMTozLCB5ID0gYygiYSIsICJiIiwgImMiKSkNCg0KYGBgDQoNCg0KI1N1YnNldHRpbmcgT2JqZWN0cw0KDQpUaGVyZSBhcmUgdGhyZWUgbWFpbiB3YXlzIHRvIHN1YnNldCBvYmplY3RzOg0KYGBge3J9DQpkZlsyXSANCmRmW3ldIA0KZGZbWzJdXQ0KZGZbW3ldXQ0KZGYkeQ0KDQpgYGANCg0KDQoNClRoZSBbIF0gbWV0aG9kIGNhbiByZXR1cm4gbXVsdGlwbGUgb2JqZWN0cyB3aXRoIG5hbWVzIGluY2x1ZGVkDQoNCltbIF1dIGFuZCAkIGJvdGggcmV0dXJuIHNpbmdsZSBvYmplY3RzIHdpdGhvdXQgbmFtZXMNCg0KJCBvbmx5IHdvcmtzIG9uIHJlY3Vyc2l2ZSBvYmplY3RzIGxpa2UgbGlzdHMgYW5kIGRhdGEgZnJhbWVzDQokIHdpbGwgbm90IHdvcmsgb24gYXRvbWljIG9iamVjdHMgbGlrZSB2ZWN0b3JzIGFuZCBtYXRyaWNlcw0KDQojTmFtZXMNCg0KWW91IGNhbiBzdWJzZXQgdmFyaWFibGVzIGJ5IHJvdyBvciBjb2x1bW4gbmFtZXMuDQoNCk9ubHkgdGhlIGRmIG9iamVjdCB3ZSBjcmVhdGVkIGhhcyBuYW1lcy4NCg0KWW91IGNhbiBhZGQgbmFtZXM6DQpgYGB7cn0NCm5hbWVzKGxzKTwtYygiQSIsIkIiLCJDIiwiRCIsIkUiLCJGIikNCm5hbWVzKGxzKTwtTEVUVEVSU1sxOjZdDQpjb2xuYW1lcyhtKTwtIExFVFRFUlNbMToyXQ0Kcm93bmFtZXMobSk8LSBMRVRURVJTWzI0OjI2XQ0KDQpgYGANCg0KDQpZb3UgY2FuIHJlbmFtZSBjb2x1bW5zIGFuZCByb3dzDQpgYGB7cn0NCmNvbG5hbWVzKGRmKTwtIGMoIkEiLCJCIikNCmNvbG5hbWVzKGRmKTwtIExFVFRFUlNbMToyXQ0KDQpgYGANCg0KDQojQWRkaW5nIGNvbHVtbnMNCmBgYHtyfQ0KI0FkZCBhbiB1bm5hbWVkIHRoaXJkIGNvbHVtbiB0byBkZiBhbmQgbQ0KDQpkZlssM108LTE6Mw0KbVssM108LTE6Mw0KDQojQWRkIGRmIHRvIG0gYXMgYWRkaXRpb25hbCBjb2x1bW5zOg0KZGZtYzwtY2JpbmQoZGYsbSkNCiNjYmluZCB3aWxsIG9ubHkgd29yayBpZiByb3cgbmFtZXMgbWF0Y2ghDQoNCmBgYA0KDQoNCmBgYHtyfQ0KI0FkZCBhIGNvbHVtbiBuYW1lZCBEIHRvIGRmDQpkZiREPC0xOjQNCiNUaGlzIHdpbGwgbm90IHdvcmsgZm9yIG0hDQoNCmBgYA0KDQojQWRkaW5nIHJvd3MNCg0KYGBge3J9DQoNCiMgQWRkIGFuIHVubmFtZWQgNHRoIHJvdyB0byBkZiBhbmQgbToNCmRmWzQsXTwtMTo0DQptWzQsXTwtMTo0DQoNCiMgQWRkIG0gdG8gZGYgYXMgYWRkaXRpb25hbCByb3dzOg0KZGZtcjwtcmJpbmQoZGYsbSkNCiMgcmJpbmQgd2lsbCBvbmx5IHdvcmsgaWYgY29sdW1uIG5hbWVzIG1hdGNoIQ0KDQoNCmBgYA0KDQoNCiMgUmVtb3ZpbmcgY29sdW1ucyBhbmQgcm93cw0KDQpgYGB7cn0NCiMgVG8gZGVsZXRlIHRoZSBmaXJzdCBjb2x1bW4gb2YgbToNCm0gPC0gbVsgLC0xXQ0KDQojIFRvIGRlbGV0ZSB0aGUgQiBjb2x1bW4gb2YgbToNCm0gPC0gbVstQl0NCg0KIyBUbyBkZWxldGUgdGhlIGZpcnN0IHJvdyBvZiBtOg0KbSA8LSBtWy0xLCBdDQoNCiMgVG8gcmVtb3ZlIGV2ZXJ5dGhpbmcgZXhjZXB0IGNvbHVtbiBCIGluIGRmOg0KZGY8LWRmJEINCg0KYGBgDQoNCg==</div>
 
 
 
